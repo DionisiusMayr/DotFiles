@@ -179,6 +179,16 @@ noremap <Leader>p "+p
 nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+" Disabling arrow keys
+imap <Up>    <nop>
+imap <Down>  <nop>
+imap <Left>  <nop>
+imap <Right> <nop>
+map  <Up>    <nop>
+map  <Down>  <nop>
+map  <Left>  <nop>
+map  <Right> <nop>
+
 
 " Plugins
 " =======
@@ -192,7 +202,3 @@ let g:airline_theme = 'base16_ashes'
 
 " Workspace/Experiments
 " =====================
-map <Up>    <nop>
-map <Down>  <nop>
-map <Left>  <nop>
-map <Right> <nop>
