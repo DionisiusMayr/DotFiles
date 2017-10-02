@@ -192,3 +192,7 @@ let g:airline_theme = 'base16_ashes'
 
 " Workspace/Experiments
 " =====================
+map <Up>    <nop>
+map <Down>  <nop>
+map <Left>  <nop>
+map <Right> <nop>
