@@ -22,7 +22,12 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'vimwiki/vimwiki'
 Plugin 'tpope/vim-fugitive'
 Plugin 'int3/vim-extradite'
+
+" Colorschemes
 Plugin 'junegunn/seoul256.vim'
+Plugin 'morhetz/gruvbox'
+Plugin 'sjl/badwolf'
+Plugin 'nanotech/jellybeans.vim'
 
 " Learning how to use
 " -------------------
@@ -47,10 +52,15 @@ Plugin 'eagletmt/neco-ghc'
 "Plugin 'Twinside/vim-hoogle'
 "Plugin 'mpickering/hlint-refactor-vim'
 
+" Python
+" ------
+Plugin 'nvie/vim-flake8'
+Plugin 'davidhalter/jedi-vim'
+
 set csverb
 " Check later
 " -----------
-" Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'christoomey/vim-tmux-navigator'
 " Plugin 'edkolev/tmuxline.vim'
@@ -85,12 +95,13 @@ set wildmode=list:longest,full          " TODO check it Longest unambiguous pref
 set wildignore=*~,*.o,*.obj,*.pyc		" Ignore compiled files
 set wildignore+=*.gif,*.jpg,*.png		" Ignore images
 
+set cursorline          " Highlight the current line
 set number				" Display the line number
 " set relativenumber
 
 set nowrap 				" Disable line wrapping
 set backspace=indent,eol,start " Enable correct backspace in insert mode
-set whichwrap+=<,>,h,l
+" set whichwrap+=<,>,h,l
 
 set hlsearch			" Highlight matches found
 set incsearch			" Highlight matches when typing
@@ -112,8 +123,9 @@ try
     " colorscheme solarized 
     " let g:solarized_termcolors=256
     " colorscheme Monokai
-    colorscheme seoul256
-    let g:seoul256_background=236
+    " colorscheme seoul256
+    " let g:seoul256_background=236
+    colorscheme gruvbox
 catch
 endtry
 
@@ -298,6 +310,7 @@ map <leader>ap :Align
 " Tagbar (from HVN)
 " ------
 map <leader>tt :TagbarToggle<CR>
+map <F10> :TagbarToggle<CR>
 
 set tags=tags;/
 set cst
@@ -338,6 +351,34 @@ endfunction
 " Show list of last-committed files
 nnoremap <silent> <leader>g? :call CommittedFiles()<CR>:copen<CR>
 
+" Python
+" ======
+let python_highlight_all = 1
+
+" From https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
+au BufNewFile,BufRead *.py:
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+" vim-flake8
+" ==========
+autocmd BufWritePost *.py call Flake8()
+let g:flake8_show_in_gutter = 1
 
 " Workspace/Experiments
 " =====================
@@ -357,9 +398,11 @@ let g:necoghc_use_stack = 1
 
 " YouCompleteMe
 " -------------
-
-"TODO: check if the code completion for python works
-"let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:ycm_filetype_blacklist = {'python': 1}
+" let g:ycm_specific_completion_to_disable = {'python': 1}
+" let g:ycm_python_binary_path = '/usr/bin/python'
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "TODO: put this on the right place
 "nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
@@ -377,10 +420,11 @@ let g:necoghc_use_stack = 1
 "nnoremap <silent> <C-w><C-\>   :TmuxNavigatePrevious<cr>
 
 " Syntastic
-" TODO check syntastic
+" ---------
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
+" let g:syntastic_python_checkers=['flake8']
 
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
