@@ -11,7 +11,6 @@ filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-" set rtp+=/home/dionisius/.config/haskell-vim-now/backup/.vim.20171230_004538/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
@@ -107,8 +106,8 @@ set hlsearch			" Highlight matches found
 set incsearch			" Highlight matches when typing
 
 " Use smartcase on searches
-set ignorecase
-set smartcase
+" set ignorecase
+" set smartcase
 
 " set complete-=i			" Do not search included files for completion
 set completeopt+=longest " TODO check it
@@ -251,6 +250,10 @@ noremap <leader>bd :bd<cr>
 " fuzzy find buffers
 noremap <leader>b<space> :CtrlPBuffer<cr>
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+" (From https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work#7078429)
+cmap w!! w !sudo tee > /dev/null %
+
 
 " Plugins
 " =======
@@ -356,14 +359,16 @@ nnoremap <silent> <leader>g? :call CommittedFiles()<CR>:copen<CR>
 let python_highlight_all = 1
 
 " From https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
-au BufNewFile,BufRead *.py:
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set wrap |
+    \ set colorcolumn=80
 
 "python with virtualenv support
 py << EOF
@@ -379,6 +384,11 @@ EOF
 " ==========
 autocmd BufWritePost *.py call Flake8()
 let g:flake8_show_in_gutter = 1
+
+" jedi-vim
+" ========
+let g:jedi#completions_command = "<C-X>"
+
 
 " Workspace/Experiments
 " =====================
@@ -424,7 +434,7 @@ let g:necoghc_use_stack = 1
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
-" let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_checkers=['flake8']
 
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
