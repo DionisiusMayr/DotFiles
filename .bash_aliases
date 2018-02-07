@@ -6,7 +6,7 @@ alias gs='git status'
 
 alias ga='git add'
 alias gd='git diff'
-alias gb='git branch'
+alias gb='git branch -a'
 
 alias gc='git commit'
 alias gcm='git commit -m'
@@ -20,3 +20,6 @@ alias gla='git log --decorate --all'
 alias glas='git log --decorate --all --stat'
 alias glga='git log --decorate --graph --all'
 alias glgas='git log --decorate --graph --all --stat'
+
+# tmux
+alias stc='echo "Sourcing ~/.tmux.conf" && tmux source-file ~/.tmux.conf'

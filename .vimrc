@@ -59,7 +59,7 @@ Plugin 'davidhalter/jedi-vim'
 set csverb
 " Check later
 " -----------
-Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-syntastic/syntastic'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'christoomey/vim-tmux-navigator'
 " Plugin 'edkolev/tmuxline.vim'
@@ -84,6 +84,8 @@ set showcmd 			" Show commands on the bottom right
 set showmode 			" Show current mode on bottom left
 set laststatus=2 		" Always display status line
 set history=1000		" Store 1000 lines of command line history
+
+set colorcolumn=80
 
 set autoread			" Auto read when a file is changed form the outside
 
@@ -139,10 +141,13 @@ set tabstop=4			" Show existing tab 4 spaces long
 "set noexpandtab			" Use hard tabs
 set expandtab			" Use soft tabs
 
-set scrolloff=5			" Stay 5 lines away from the top/bottom of screen
-set sidescrolloff=7		" Stay 7 characters away from the left/right side of the screen
+set scrolloff=2			" Stay 2 lines away from the top/bottom of screen
+set sidescrolloff=4		" Stay 4 characters away from the left/right side of the screen
 set sidescroll=1		" Move 1 character at a time when side scrolling
 set display+=lastline	" Print as much as possible of the last line
+
+" set splitbelow
+set splitright
 
 set foldmethod=indent	" Folding method based on indentation level
 set nofoldenable		" Do not fold at start
@@ -203,7 +208,7 @@ nnoremap <cr> :noh<CR><CR>:<backspace>
 
 " Enter paste mode
 noremap <F8> :set paste<CR>i
-au InsertLeave * set nopaste " Leave paste mode on exit
+autocmd InsertLeave * set nopaste " Leave paste mode on exit
 
 
 " Spelling
@@ -359,7 +364,7 @@ nnoremap <silent> <leader>g? :call CommittedFiles()<CR>:copen<CR>
 let python_highlight_all = 1
 
 " From https://realpython.com/blog/python/vim-and-python-a-match-made-in-heaven/
-au BufNewFile,BufRead *.py
+autocmd BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -367,8 +372,7 @@ au BufNewFile,BufRead *.py
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix |
-    \ set wrap |
-    \ set colorcolumn=80
+    \ set wrap
 
 "python with virtualenv support
 py << EOF
@@ -382,8 +386,11 @@ EOF
 
 " vim-flake8
 " ==========
-autocmd BufWritePost *.py call Flake8()
-let g:flake8_show_in_gutter = 1
+
+autocmd BufNewFile,BufRead *.py
+    \ noremap <F5> :call Flake8()<CR>
+" autocmd BufWritePost *.py call Flake8()
+" let g:flake8_show_in_gutter = 1
 
 " jedi-vim
 " ========
@@ -404,7 +411,7 @@ let g:necoghc_use_stack = 1
 " haskellmode-vim
 " ---------------
 " let g:haddock_browser="/usr/bin/firefox"
-" au BufEnter *.hs compiler ghc
+" autocmd BufEnter *.hs compiler ghc
 
 " YouCompleteMe
 " -------------
@@ -434,7 +441,7 @@ let g:necoghc_use_stack = 1
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
-let g:syntastic_python_checkers=['flake8']
+" let g:syntastic_python_checkers=['flake8']
 
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
