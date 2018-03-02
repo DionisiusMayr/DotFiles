@@ -42,6 +42,9 @@ Plugin 'simnalamburt/vim-mundo'
 Plugin 'majutsushi/tagbar'
 Plugin 'nathanaelkane/vim-indent-guides'
 
+Plugin 'jparise/hive.vim'
+Plugin 'plasticboy/vim-markdown'
+
 " Haskell
 " -------
 "Plugin 'neovimhaskell/haskell-vim'
@@ -85,7 +88,7 @@ set showmode 			" Show current mode on bottom left
 set laststatus=2 		" Always display status line
 set history=1000		" Store 1000 lines of command line history
 
-set colorcolumn=80
+" set colorcolumn=80
 
 set autoread			" Auto read when a file is changed form the outside
 
@@ -149,7 +152,8 @@ set display+=lastline	" Print as much as possible of the last line
 " set splitbelow
 set splitright
 
-set foldmethod=indent	" Folding method based on indentation level
+" set foldmethod=indent	" Folding method based on indentation level
+set foldmethod=manual
 set nofoldenable		" Do not fold at start
 
 set title               " Do not change the window title

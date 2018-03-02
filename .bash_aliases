@@ -1,4 +1,5 @@
 # bash
+alias ebrc="vim ~/.bashrc"
 alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
 
 # git
