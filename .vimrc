@@ -88,7 +88,7 @@ set showmode 			" Show current mode on bottom left
 set laststatus=2 		" Always display status line
 set history=1000		" Store 1000 lines of command line history
 
-" set colorcolumn=80
+set colorcolumn=80
 
 set autoread			" Auto read when a file is changed form the outside
 
@@ -182,6 +182,10 @@ set ttimeoutlen=100
 set timeoutlen=2000
 
 set encoding=utf8       " TODO check it
+
+augroup filetypedetect
+    au BufRead,BufNewFile .bash_secret setfiletype sh
+augroup END
 
 " Keep undo history across sessions, by storing in file 
 " From https://github.com/skwp/dotfiles/blob/master/vimrc

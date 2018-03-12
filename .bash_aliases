@@ -1,6 +1,7 @@
 # bash
 alias ebrc="vim ~/.bashrc"
 alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
+alias evrc="vim ~/.vimrc"
 
 # git
 alias gs='git status'
@@ -21,6 +22,7 @@ alias gla='git log --decorate --all'
 alias glas='git log --decorate --all --stat'
 alias glga='git log --decorate --graph --all'
 alias glgas='git log --decorate --graph --all --stat'
+alias glgap='git log --decorate --graph --all --pretty=oneline --abbrev-commit'
 
 # tmux
 alias stc='echo "Sourcing ~/.tmux.conf" && tmux source-file ~/.tmux.conf'
