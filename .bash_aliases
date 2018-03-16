@@ -26,3 +26,8 @@ alias glgap='git log --decorate --graph --all --pretty=oneline --abbrev-commit'
 
 # tmux
 alias stc='echo "Sourcing ~/.tmux.conf" && tmux source-file ~/.tmux.conf'
+
+# hledger
+alias hl='hledger'
+alias hla='hledger add'
+alias hlb='hledger balance'
