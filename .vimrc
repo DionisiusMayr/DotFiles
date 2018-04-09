@@ -54,6 +54,8 @@ Plugin 'eagletmt/neco-ghc'
 "Plugin 'Twinside/vim-hoogle'
 "Plugin 'mpickering/hlint-refactor-vim'
 
+let $PATH = $PATH . ':' . expand('~/.cabal/bin')
+
 " Python
 " ------
 Plugin 'nvie/vim-flake8'
@@ -182,6 +184,8 @@ set ttimeoutlen=100
 set timeoutlen=2000
 
 set encoding=utf8       " TODO check it
+
+set cryptmethod=blowfish2
 
 augroup filetypedetect
     au BufRead,BufNewFile .bash_secret setfiletype sh
