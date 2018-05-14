@@ -41,6 +41,7 @@ Plugin 'vim-scripts/Align'
 Plugin 'simnalamburt/vim-mundo'
 Plugin 'majutsushi/tagbar'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'christoomey/vim-tmux-navigator'
 
 Plugin 'jparise/hive.vim'
 Plugin 'plasticboy/vim-markdown'
