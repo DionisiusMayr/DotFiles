@@ -133,10 +133,10 @@ try
     " colorscheme seoul256
     " let g:seoul256_background=236
     colorscheme gruvbox
+
+    set background=dark
 catch
 endtry
-
-set background=dark
 
 set autoindent			" Auto-indent even when no filetype-specific indenting is enabled
 set smartindent         " Indent after special character like { or before }
@@ -187,6 +187,10 @@ set timeoutlen=2000
 set encoding=utf8       " TODO check it
 
 set cryptmethod=blowfish2
+
+augroup filetypedetect
+    au BufRead,BufNewFile *.6502 set binary
+augroup END
 
 augroup filetypedetect
     au BufRead,BufNewFile .bash_secret setfiletype sh
