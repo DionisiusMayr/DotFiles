@@ -3,6 +3,10 @@ alias ebrc="vim ~/.bashrc"
 alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
 alias evrc="vim ~/.vimrc"
 
+alias apti='sudo apt install'
+alias apts='sudo apt-cache search'
+alias aptu='sudo apt update && sudo apt upgrade'
+
 # git
 alias gs='git status'
 

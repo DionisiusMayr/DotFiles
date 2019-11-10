@@ -45,7 +45,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 
 Plugin 'jparise/hive.vim'
 Plugin 'plasticboy/vim-markdown'
-
+Plugin 'ledger/vim-ledger'
 " Haskell
 " -------
 "Plugin 'neovimhaskell/haskell-vim'
