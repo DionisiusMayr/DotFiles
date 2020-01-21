@@ -60,12 +60,12 @@ let $PATH = $PATH . ':' . expand('~/.cabal/bin')
 " Python
 " ------
 Plugin 'nvie/vim-flake8'
-Plugin 'davidhalter/jedi-vim'
+" Plugin 'davidhalter/jedi-vim'
 
 set csverb
 " Check later
 " -----------
-" Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-syntastic/syntastic'
 " Plugin 'Valloric/YouCompleteMe'
 " Plugin 'christoomey/vim-tmux-navigator'
 " Plugin 'edkolev/tmuxline.vim'
@@ -91,7 +91,7 @@ set showmode 			" Show current mode on bottom left
 set laststatus=2 		" Always display status line
 set history=1000		" Store 1000 lines of command line history
 
-set colorcolumn=80
+set colorcolumn=100
 
 set autoread			" Auto read when a file is changed form the outside
 
@@ -155,7 +155,6 @@ set display+=lastline	" Print as much as possible of the last line
 " set splitbelow
 set splitright
 
-" set foldmethod=indent	" Folding method based on indentation level
 set foldmethod=manual
 set nofoldenable		" Do not fold at start
 
@@ -242,8 +241,19 @@ noremap <leader>s? z=
 
 " Copying/pasting from/to clipboard
 " Note: + affects the register, while * doesn't.
-noremap <Leader>y "+y
-noremap <Leader>p "+p
+if has("unix")
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"  " MacOS
+        " TODO: make it *really* silent
+        map <silent> <leader>y :w !pbcopy<CR><CR>
+        map <silent> <leader>Y ggvG:w !pbcopy<CR><CR>
+        set clipboard=unnamed
+    else
+        noremap <leader>y "+y
+        noremap <leader>Y ggvG"+y
+        noremap <leader>p "+p
+    endif
+endif
 
 " Editing .vimrc
 nnoremap <leader>ev :tabnew $MYVIMRC<cr>
@@ -282,6 +292,8 @@ cmap w!! w !sudo tee > /dev/null %
 
 " NERDTree
 " --------
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
 " From HVN
 function! IsNERDTreeOpen()
     return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
@@ -314,7 +326,7 @@ nmap <leader>e :e <C-R>=expand("%:p:h") . '/'<CR>
 
 " CtrlP (TODO check it) (from HVN)
 " -----
-nnoremap <silent> <Leader><space> :CtrlP<CR>
+nnoremap <silent> <leader><space> :CtrlP<CR>
 let g:ctrlp_max_files=0
 let g:ctrlp_show_hidden=1
 let g:ctrlp_custom_ignore = { 'dir': '\v[\/](.git|.cabal-sandbox|.stack-work)$' }
@@ -324,11 +336,11 @@ let g:ctrlp_custom_ignore = { 'dir': '\v[\/](.git|.cabal-sandbox|.stack-work)$' 
 " Stop Align plugin from forcing its mappings on us
 let g:loaded_AlignMapsPlugin=1
 " Align on equal signs
-map <Leader>a= :Align =<CR>
+map <leader>a= :Align =<CR>
 " Align on commas
-map <Leader>a, :Align ,<CR>
+map <leader>a, :Align ,<CR>
 " Align on pipes
-map <Leader>a<bar> :Align <bar><CR>
+map <leader>a<bar> :Align <bar><CR>
 " Prompt for align character
 map <leader>ap :Align
 
@@ -389,8 +401,20 @@ autocmd BufNewFile,BufRead *.py
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix |
-    \ set wrap
+    \ set wrap |
+    \ set foldmethod=indent |  " Folding method based on indentation level
+    \ set foldlevel=99
 
+" https://realpython.com/vim-and-python-a-match-made-in-heaven/
+" Python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
 " vim-flake8
 " ==========
@@ -428,6 +452,7 @@ let g:necoghc_use_stack = 1
 " let g:ycm_python_binary_path = '/usr/bin/python'
 " let g:ycm_autoclose_preview_window_after_completion = 1
 " map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" let g:ycm_log_level = 'debug'
 
 "TODO: put this on the right place
 "nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>

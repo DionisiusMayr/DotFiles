@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=5000
-HISTFILESIZE=10000
+HISTSIZE=50000
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -125,3 +125,27 @@ export PATH=$JAVA_HOME/bin:$PATH
 stty -ixon
 
 [ -z "$TMUX" ] && export TERM=xterm-256color
+
+export PATH=$HOME/.local/bin/:$PATH
+export PATH=$HOME/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:$PATH
+if [ -d "/Applications/MacVim.app/Contents/bin/" ]; then
+    export PATH=/Applications/MacVim.app/Contents/bin/:$PATH
+fi
+
+export LEDGER_FILE=$HOME/hledger.journal
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# See vim :h syntastic-checkers for pylint
+export LC_CTYPE=en_US.UTF-8
+
+. ~/Documents/repos/DotFiles/git-completion.bash
+. ~/Documents/repos/DotFiles/git-prompt.sh
+
+if [ -f "~/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    source ~/Documents/repos/bash-git-prompt/gitprompt.sh
+fi
+
+export REPOS='$HOME/Documents/repos'
+export EDITOR='vim'
