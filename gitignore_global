@@ -1,3 +1,7 @@
-# git config --global core.excludesfile ~/Documents/DotFiles/gitignore_global
+# git config --global core.excludesfile ~/Documents/repos/DotFiles/gitignore_global
 
 *.swp
+.DS_Store
+.vscode/
+venv/
+.rgignore
