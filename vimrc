@@ -407,7 +407,7 @@ autocmd BufNewFile,BufRead *.py
 
 " https://realpython.com/vim-and-python-a-match-made-in-heaven/
 " Python with virtualenv support
-py << EOF
+py3 << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
