@@ -139,13 +139,13 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # See vim :h syntastic-checkers for pylint
 export LC_CTYPE=en_US.UTF-8
 
-. ~/Documents/repos/DotFiles/git-completion.bash
-. ~/Documents/repos/DotFiles/git-prompt.sh
+. ${HOME}/Documents/repos/DotFiles/git-completion.bash
+. ${HOME}/Documents/repos/DotFiles/git-prompt.sh
 
-if [ -f "~/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
+if [ -f "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
-    source ~/Documents/repos/bash-git-prompt/gitprompt.sh
+    source "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh"
 fi
 
-export REPOS='$HOME/Documents/repos'
+export REPOS="${HOME}/Documents/repos"
 export EDITOR='vim'
