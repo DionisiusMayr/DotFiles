@@ -25,7 +25,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -76,8 +76,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -88,13 +88,9 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -AlF'
+alias ll='ls -lAF'
 alias la='ls -A'
 alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -120,32 +116,47 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export JAVACMD=$JAVA_HOME/bin/java
-export PATH=$JAVA_HOME/bin:$PATH
-stty -ixon
+setxkbmap -option ctrl:nocaps       # Make Caps Lock a Control key
 
-[ -z "$TMUX" ] && export TERM=xterm-256color
-
-export PATH=$HOME/.local/bin/:$PATH
-export PATH=$HOME/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:$PATH
-if [ -d "/Applications/MacVim.app/Contents/bin/" ]; then
-    export PATH=/Applications/MacVim.app/Contents/bin/:$PATH
+# PATH
+export PATH="${HOME}/.local/bin/:${PATH}"
+if [ -d "${HOME}/.yarn/bin:${HOME}/.config/yarn/global/node_modules/.bin:${PATH}" ]; then
+    export PATH="${HOME}/.yarn/bin:${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
 fi
 
-export LEDGER_FILE=$HOME/hledger.journal
+if [ -d "${HOME}/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:${PATH}" ]; then
+    export PATH="${HOME}/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:${PATH}"
+fi
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+if [ -d "/Applications/MacVim.app/Contents/bin/" ]; then
+    export PATH=/Applications/MacVim.app/Contents/bin/:${PATH}
+fi
+
+stty -ixon
+
+# hledger support
+export LEDGER_FILE="${HOME}/hledger.journal"
+
+# Vim support
+export EDITOR='vim'
 
 # See vim :h syntastic-checkers for pylint
-export LC_CTYPE=en_US.UTF-8
+export LC_CTYPE=en_CA.UTF-8
 
-. ${HOME}/Documents/repos/DotFiles/git-completion.bash
-. ${HOME}/Documents/repos/DotFiles/git-prompt.sh
+# Git completion
+source "${HOME}/Documents/repos/DotFiles/git-completion.bash"
+source "${HOME}/Documents/repos/DotFiles/git-prompt.sh"
 
 if [ -f "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
     source "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh"
 fi
 
-export REPOS="${HOME}/Documents/repos"
-export EDITOR='vim'
+# export GIT_PROMPT_THEME="Single_line_Solarized_Lambda"
+export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
+
+# tmux support
+[ -z "$TMUX" ] && export TERM=xterm-256color
+
+export REPOS="${HOME}/pier/repos"
+export PATH="${PATH}:/home/dionisius/installed_software/node-v12.14.1-linux-x64/bin"
