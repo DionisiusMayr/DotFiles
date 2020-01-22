@@ -1,0 +1,8 @@
+[core]
+	editor = vim
+	excludesfile = /home/dionisius/Documents/repos/DotFiles/gitignore_global
+[user]
+	name = DionisiusMayr
+	email = dionisiusom@gmail.com
+[includeIf "gitdir:~/pier/repos/"]
+    path = ~/.gitconfig_pier
