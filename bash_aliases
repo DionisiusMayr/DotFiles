@@ -1,3 +1,4 @@
+# TODO: refactor this file
 # bash
 alias     ..='pushd .. > /dev/null'
 alias    ...='pushd ../../ > /dev/null'
@@ -18,6 +19,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias  senv='source venv/bin/activate'
 alias  cenv='! [ -d ./venv/ ] && python3 -m virtualenv venv'
 alias csenv='cenv && senv && [ -f ./requirements.txt ] && pip install -r requirements.txt'
+nbd() {
+    nbdime diff $1 $2 | bat --style="plain"
+}
 
 ## pylint
 alias pylintrc='! [ -f ./.pylintrc ] && [ -x "$(command -v pylint)" ] &&  pylint --generate-rcfile > ./.pylintrc'
@@ -29,6 +33,7 @@ alias pipreq='pip freeze > requirements.txt'
 alias ebrc='vim ~/.bashrc'
 alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
 alias evrc='vim ~/.vimrc'
+alias ebal='vim ~/.bash_aliases'
 
 alias apti='sudo apt install'
 alias apts='sudo apt-cache search'
@@ -72,6 +77,7 @@ alias   dst='read -p "Stop all containers and remove them? " -n 1 -r && [[ $REPL
 alias   dps='docker ps -a  --format "table {{.Status}}\t{{.Names}}\t{{.Ports}}\t{{.Image}}\t{{.Command}}"'
 alias  drmi='docker rmi $(docker images --quiet --filter "dangling=true")'
 alias  drmv='docker volume rm $(docker volume ls -qf dangling=true)'
+alias   dco='docker-compose'
 
 # Mac OS X
 alias cmac="find . -name '*.DS_Store' -type f -delete"

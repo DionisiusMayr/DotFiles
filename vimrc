@@ -132,9 +132,9 @@ try
     " colorscheme Monokai
     " colorscheme seoul256
     " let g:seoul256_background=236
-    colorscheme gruvbox
-
-    set background=dark
+    " colorscheme gruvbox
+    " set background=dark
+    colorscheme jellybeans
 catch
 endtry
 
