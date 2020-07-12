@@ -6,7 +6,7 @@ alias   ....='pushd ../../../ > /dev/null'
 alias  .....='pushd ../../../../ > /dev/null'
 alias ......='pushd ../../../../../ > /dev/null'
 
-alias ll='ls -AlF'
+alias ll='ls -AlFh'
 alias la='ls -A'
 alias l='ls -CF'
 
