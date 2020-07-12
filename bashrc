@@ -72,25 +72,8 @@ xterm*|rxvt*)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -lAF'
-alias la='ls -A'
-alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -132,6 +115,19 @@ if [ -d "/Applications/MacVim.app/Contents/bin/" ]; then
     export PATH=/Applications/MacVim.app/Contents/bin/:${PATH}
 fi
 
+# R
+if [ -d "${PATH}:/usr/lib/R/bin" ]; then
+   export PATH="${PATH}:/usr/lib/R/bin"
+fi
+
+# Emacs
+if [ -d "${PATH}:${HOME}/.emacs.d/bin" ]; then
+   export PATH="${PATH}:${HOME}/.emacs.d/bin"
+fi
+##########
+# PATH end
+##########
+
 stty -ixon
 
 # hledger support
@@ -152,11 +148,16 @@ if [ -f "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
     source "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh"
 fi
 
-# export GIT_PROMPT_THEME="Single_line_Solarized_Lambda"
 export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
 
 # tmux support
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
-export REPOS="${HOME}/pier/repos"
-export PATH="${PATH}:/home/dionisius/installed_software/node-v12.14.1-linux-x64/bin"
+# TODO: fix this: bat as man
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[[ -s "${HOME}/.autojump/etc/profile.d/autojump.sh" ]] && source "${HOME}/.autojump/etc/profile.d/autojump.sh"
+
+# Haskell configs
+[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"

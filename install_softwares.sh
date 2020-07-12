@@ -1,3 +1,5 @@
+# #!/bin/env bash
+
 # Vundle
 # https://github.com/VundleVim/Vundle.vim
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -10,9 +12,9 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # autojump
 # https://github.com/wting/autojump
 git clone git://github.com/wting/autojump.git ~/installed_software/autojump
-pushd ~/installed_software/autojump
+pushd ~/installed_software/autojump || exit
 ./install.py
-popd
+popd || exit
 cat '[[ -s /home/dionisius/.autojump/etc/profile.d/autojump.sh ]] && source /home/dionisius/.autojump/etc/profile.d/autojump.sh' >> ~/.bashrc
 
 # fd
