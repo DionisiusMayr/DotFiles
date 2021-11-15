@@ -417,14 +417,14 @@ autocmd BufNewFile,BufRead *.py
 
 " https://realpython.com/vim-and-python-a-match-made-in-heaven/
 " Python with virtualenv support
-py3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  exec(open(activate_this).read(), dict(__file__=activate_this))
-EOF
+" py3 << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"   project_base_dir = os.environ['VIRTUAL_ENV']
+"   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"   exec(open(activate_this).read(), dict(__file__=activate_this))
+" EOF
 
 " vim-flake8
 " ==========
