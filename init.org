@@ -15,7 +15,7 @@
 * Preferences
 #+begin_src emacs-lisp
   (global-visual-line-mode 1) ; Set words to wrap
-  
+
   (scroll-bar-mode -1)  ;; Remove lateral scroll bar
   (tool-bar-mode -1)    ;; Remove toolbar
   (menu-bar-mode -1)    ;; Remove menu bar
@@ -30,12 +30,12 @@
      '("6b1abd26f3e38be1823bd151a96117b288062c6cde5253823539c6926c3bb178" default))
    '(helm-minibuffer-history-key "M-p")
    '(initial-frame-alist '((fullscreen . maximized))))
-  
-  
+
+
   ;; Misc Stuff
   (fset 'yes-or-no-p 'y-or-n-p) ;; Change prompt
   (setq visible-bell t)         ;; Blink screen to represent a bell
-  
+
   ;; TODO
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
         backup-by-copying t    ; Don't delink hardlinks
@@ -44,11 +44,11 @@
         kept-new-versions 20   ; how many of the newest versions to keep
         kept-old-versions 5    ; and how many of the old
         )
-  
+
   ;; Controls the start screen (not needed)
   (setq inhibit-startup-message nil)
-  
-  
+
+
   ;; Date Format
   (setq calendar-date-style "iso")
 #+end_src
@@ -89,7 +89,7 @@
       "f r" '(helm-recentf :which-key "Recent File")
       "f f" '(helm-find-files :which-key "Find File")
       ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
-      "f p" '((lambda() (interactive)(find-file "~/.emacs.d/init.org")) :which-key "init.org")
+      "f p" '((lambda() (interactive)(find-file "~/repos/DotFiles/init.org")) :which-key "init.org")
       "f s" '(save-buffer :which-key "Save Buffer")
       "g" '(:ignore t :which-key "Git")
       "g s" '(magit-status :which-key "Status")
@@ -226,11 +226,11 @@
             treemacs-width                         35
             treemacs-width-is-initially-locked     t
             treemacs-workspace-switch-cleanup      nil)
-  
+
       ;; The default width and height of the icons is 22 pixels. If you are
       ;; using a Hi-DPI display, uncomment this to double the icon size.
       ;;(treemacs-resize-icons 44)
-  
+
       (treemacs-follow-mode t)
       (treemacs-filewatch-mode t)
       (treemacs-fringe-indicator-mode 'always)
@@ -249,7 +249,7 @@
           ;; ("C-x t C-t" . treemacs-find-file)
           ;; ("C-x t M-t" . treemacs-find-tag)
       ))
-  
+
   (dio/leader-keys
     "a" '(:ignore t :which-key "apps")
     "a t" '(:ignore t :which-key "treemacs")
@@ -259,27 +259,27 @@
     "a t C-t" '(treemacs-find-file :which-key "treemacs-find-file")
     "a t M-t" '(treemacs-find-tag :which-key "treemacs-find-tag")
   )
-  
+
   (use-package treemacs-evil
     :after (treemacs evil))
-  
+
   (use-package treemacs-projectile
     :after (treemacs projectile))
-  
+
   (use-package treemacs-icons-dired
     :after (treemacs dired)
     :config (treemacs-icons-dired-mode))
-  
+
   (use-package treemacs-magit
     :after (treemacs magit))
-  
+
   (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
     :after (treemacs persp-mode) ;;or perspective vs. persp-mode
     :config (treemacs-set-scope-type 'Perspectives))
-  
+
   ;; Icon package
   (use-package all-the-icons)
-  
+
   (use-package treemacs-all-the-icons
     :after (treemacs)
     :config
@@ -680,7 +680,7 @@ Works like a "workspace".
   (use-package org-superstar  ;; Pretify bullets and Org in general
     :config
     (add-hook 'org-mode-hook (lambda() (org-superstar-mode 1))))
-  
+
 (setq org-return-follows-link nil)
 (setq org-blank-before-new-entry nil)
 ;; (setq org-log-done time)
@@ -708,19 +708,19 @@ Works like a "workspace".
 #+begin_src emacs-lisp
   ;; Font
   ;; (set-face-attribute ...)
-  
+
   ;; Line numbers
   (global-display-line-numbers-mode t)         ;; Show line number
   (setq display-line-numbers-type 'relative) ;; *Relative line number
   (column-number-mode)                       ;; Show column mode in the mode line
-  
+
   ;; Highligths
   (global-hl-line-mode 1) ;; Highlight current line
   (show-paren-mode 1)     ;; Highlight matching bracket
-  
+
   ;; White characters
   (setq-default show-trailing-whitespace t)
-  
+
   (use-package hl-todo ;; TODO: Fix this
     :hook (prog-mode . hl-todo-mode)
     :config
@@ -730,23 +730,23 @@ Works like a "workspace".
        ("NOTE" success bold)
        ("FIXME" error bold)))
   )
-  
+
   ;; Doom-themes
   (use-package doom-themes
     :config (load-theme 'doom-gruvbox t))
-  
+
   ;; Doom-modeline
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :custom (doom-modeline-height 35))
-  
+
   ;; Rainbow-delimiters
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
-  
+
   ;; (use-package eterm-256color
     ;; :hook (term-mode . eterm-256color-mode))
-  
+
   ;; Remove line number for certain modes
   (dolist (mode '(treemacs-mode-hook
                   shell-mode-hook
@@ -754,7 +754,7 @@ Works like a "workspace".
                   term-mode-hook
                   vterm-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
-  
+
   (use-package dashboard
     :config
     (dashboard-setup-startup-hook)
@@ -783,7 +783,7 @@ Works like a "workspace".
     (interactive)
     (setq restart-emacs-restore-frames t)
     (restart-emacs))
-  
+
   (use-package restart-emacs
     :config
     (dio/leader-keys
