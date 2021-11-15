@@ -1,6 +1,7 @@
 [core]
 	editor = vim
 	excludesfile = /home/dionisius/Documents/repos/DotFiles/gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [user]
 	name = DionisiusMayr
 	email = dionisiusom@gmail.com

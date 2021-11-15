@@ -27,6 +27,7 @@ Plugin 'junegunn/seoul256.vim'
 Plugin 'morhetz/gruvbox'
 Plugin 'sjl/badwolf'
 Plugin 'nanotech/jellybeans.vim'
+Plugin 'embark-theme/vim'
 
 " Learning how to use
 " -------------------
@@ -46,6 +47,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'jparise/hive.vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'ledger/vim-ledger'
+
 " Haskell
 " -------
 "Plugin 'neovimhaskell/haskell-vim'
@@ -59,10 +61,11 @@ let $PATH = $PATH . ':' . expand('~/.cabal/bin')
 
 " Python
 " ------
-Plugin 'nvie/vim-flake8'
+" Plugin 'nvie/vim-flake8'
 " Plugin 'davidhalter/jedi-vim'
 
 set csverb
+
 " Check later
 " -----------
 Plugin 'vim-syntastic/syntastic'
@@ -113,9 +116,9 @@ set backspace=indent,eol,start " Enable correct backspace in insert mode
 set hlsearch			" Highlight matches found
 set incsearch			" Highlight matches when typing
 
-" Use smartcase on searches
-" set ignorecase
-" set smartcase
+" Use smartcase on searches (need both options bellow)
+set ignorecase
+set smartcase
 
 " set complete-=i			" Do not search included files for completion
 set completeopt+=longest " TODO check it
@@ -134,7 +137,8 @@ try
     " let g:seoul256_background=236
     " colorscheme gruvbox
     " set background=dark
-    colorscheme jellybeans
+    " colorscheme jellybeans
+    colorscheme embark
 catch
 endtry
 
@@ -195,6 +199,10 @@ augroup filetypedetect
     au BufRead,BufNewFile .bash_secret setfiletype sh
 augroup END
 
+augroup filetypedetect
+    au BufRead,BufNewFile *.y*ml set shiftwidth=2
+    "; set softtabstop=2; set tabstop=2; set expandtab
+augroup END
 " Keep undo history across sessions, by storing in file 
 " From https://github.com/skwp/dotfiles/blob/master/vimrc
 if has('persistent_undo') && !isdirectory(expand('~').'/.vim/backups')
@@ -315,7 +323,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline_theme = 'base16_ashes'
-let g:airline_theme = 'jellybeans'
+" let g:airline_theme = 'jellybeans'
+let g:airline_theme = 'embark'
 
 " Vim-Mundo
 " ---------
@@ -441,6 +450,10 @@ autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 let g:necoghc_enable_detailed_browse = 1
 let g:necoghc_use_stack = 1
 
+" fugitive
+" --------
+set diffopt=vertical
+
 " haskellmode-vim
 " ---------------
 " let g:haddock_browser="/usr/bin/firefox"
@@ -482,3 +495,10 @@ let g:necoghc_use_stack = 1
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
 
+" GVim
+" ----
+if has("gui_running")
+  vmap <C-S-x> "+x
+  vmap <C-S-c> "+y
+  imap <C-S-v> <Esc>"+gP
+endif

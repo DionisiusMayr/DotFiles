@@ -22,17 +22,32 @@ alias ll='ls -AlFh'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias ebrc='vim ~/.bashrc'
+alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
+alias evrc='vim ~/.vimrc'
+alias ebal='vim ~/.bash_aliases'
+alias ebis='vim ~/Documents/repos/DotFiles/install_softwares.sh'
+
+alias apti='sudo apt install'
+alias apts='sudo apt-cache search'
+alias aptu='sudo apt update && sudo apt upgrade'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# Useful tools
+alias bat='bat --style=plain'
+
 # Python
+alias py='python3'
+alias ipy='ipython3'
 ## virtualenv
 alias  senv='source venv/bin/activate'
 alias  cenv='! [ -d ./venv/ ] && python3 -m virtualenv venv'
 alias csenv='cenv && senv && [ -f ./requirements.txt ] && pip install -r requirements.txt'
 nbd() {
-    nbdime diff $1 $2 | bat --style="plain"
+    nbdime diff "$1" "$2" | bat --style="plain"
 }
 
 ## pylint
@@ -41,15 +56,6 @@ alias  pylintc='[ -x "$(command -v pylint)" ] && pylint --output-format=colorize
 
 ## pip
 alias pipreq='pip freeze > requirements.txt'
-
-alias ebrc='vim ~/.bashrc'
-alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
-alias evrc='vim ~/.vimrc'
-alias ebal='vim ~/.bash_aliases'
-
-alias apti='sudo apt install'
-alias apts='sudo apt-cache search'
-alias aptu='sudo apt update && sudo apt upgrade'
 
 # git
 alias gs='git status'
@@ -70,7 +76,8 @@ alias   gla='git log --decorate --all'
 alias  glas='git log --decorate --all --stat'
 alias  glga='git log --decorate --graph --all'
 alias glgas='git log --decorate --graph --all --stat'
-alias glgap='git log --decorate --graph --all --pretty=oneline --abbrev-commit'
+# alias glgap='git log --decorate --graph --all --pretty=oneline --abbrev-commit'
+alias glgap='git log --graph --abbrev-commit --decorate --all --pretty=format:"%C(auto)%h%C(reset) -%C(auto)%d%C(reset) %s %C(magenta)(%cr)%C(reset) %C(blue)<%an>%C(reset)"'
 
 # tmux
 alias stc='echo "Sourcing ~/.tmux.conf" && tmux source-file ~/.tmux.conf'
@@ -90,6 +97,3 @@ alias   dps='docker ps -a  --format "table {{.Status}}\t{{.Names}}\t{{.Ports}}\t
 alias  drmi='docker rmi $(docker images --quiet --filter "dangling=true")'
 alias  drmv='docker volume rm $(docker volume ls -qf dangling=true)'
 alias   dco='docker-compose'
-
-# Mac OS X
-alias cmac="find . -name '*.DS_Store' -type f -delete"

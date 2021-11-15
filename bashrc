@@ -99,34 +99,36 @@ if ! shopt -oq posix; then
   fi
 fi
 
-setxkbmap -option ctrl:nocaps       # Make Caps Lock a Control key
+# setxkbmap -option ctrl:nocaps       # Make Caps Lock a Control key
+# setxkbmap -option caps:ctrl       # Make Caps Lock a Control key
 
-# PATH
-export PATH="${HOME}/.local/bin/:${PATH}"
-if [ -d "${HOME}/.yarn/bin:${HOME}/.config/yarn/global/node_modules/.bin:${PATH}" ]; then
-    export PATH="${HOME}/.yarn/bin:${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
-fi
+########
+# PATH #
+########
 
-if [ -d "${HOME}/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:${PATH}" ]; then
-    export PATH="${HOME}/.stack/programs/x86_64-osx/ghc-8.6.5/bin/:${PATH}"
-fi
-
-if [ -d "/Applications/MacVim.app/Contents/bin/" ]; then
-    export PATH=/Applications/MacVim.app/Contents/bin/:${PATH}
+# .local/bin
+if [ -d "${HOME}/.local/bin" ]; then
+    export PATH="${HOME}/.local/bin/:${PATH}"
 fi
 
 # R
-if [ -d "${PATH}:/usr/lib/R/bin" ]; then
+if [ -d "/usr/lib/R/bin" ]; then
    export PATH="${PATH}:/usr/lib/R/bin"
 fi
 
 # Emacs
-if [ -d "${PATH}:${HOME}/.emacs.d/bin" ]; then
+if [ -d "${HOME}/.emacs.d/bin" ]; then
    export PATH="${PATH}:${HOME}/.emacs.d/bin"
 fi
-##########
-# PATH end
-##########
+
+# Haskell Cabal
+if [ -d "${HOME}/.cabal/bin" ]; then
+    export PATH="${HOME}/.cabal/bin:${PATH}"
+fi
+
+############
+# PATH END #
+############
 
 stty -ixon
 
@@ -140,12 +142,12 @@ export EDITOR='vim'
 export LC_CTYPE=en_CA.UTF-8
 
 # Git completion
-source "${HOME}/Documents/repos/DotFiles/git-completion.bash"
-source "${HOME}/Documents/repos/DotFiles/git-prompt.sh"
+source "${HOME}/repos/DotFiles/git-completion.bash"
+source "${HOME}/repos/DotFiles/git-prompt.sh"
 
-if [ -f "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh" ]; then
+if [ -f "${HOME}/repos/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
-    source "${HOME}/Documents/repos/bash-git-prompt/gitprompt.sh"
+    source "${HOME}/repos/bash-git-prompt/gitprompt.sh"
 fi
 
 export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
@@ -161,3 +163,17 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # Haskell configs
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+
+# Open tmux by default:
+# ref: https://askubuntu.com/questions/1057471/how-to-automatically-start-tmux-when-opening-gnome-terminal
+# If not running interactively, do not do anything
+[[ $- != *i* ]] && return
+# Otherwise start tmux
+[[ -z "${TMUX}" ]] && exec tmux
+
+# diff-so-fancy in ${PATH}
+export PATH=${PATH}:~/installed_software/diff-so-fancy
+
+# For the Cuda libraries
+# TODO: Check if LD_LIBRARY_PATH is indeed empty
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
