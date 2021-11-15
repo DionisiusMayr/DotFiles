@@ -26,7 +26,7 @@ alias ebrc='vim ~/.bashrc'
 alias sbrc='echo "Sourcing ~/.bashrc" && source ~/.bashrc'
 alias evrc='vim ~/.vimrc'
 alias ebal='vim ~/.bash_aliases'
-alias ebis='vim ~/Documents/repos/DotFiles/install_softwares.sh'
+alias ebis='vim ~/repos/DotFiles/install_softwares.sh'
 
 alias apti='sudo apt install'
 alias apts='sudo apt-cache search'
