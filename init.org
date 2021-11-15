@@ -1,0 +1,796 @@
+#+TITLE Emacs configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
+
+* Notes
+  :diminish ;; Don't show in the mode line
+
+* Header
+#+begin_src emacs-lisp
+  (setq user-emacs-directory "/home/dionisius/.emacs.d")
+
+  ;; https://jamiecollinson.com/blog/my-emacs-config/
+  (setq package-enable-at-startup nil)  ; TODO: Prevents a second package load and slightly improves startup time
+#+end_src
+
+* Preferences
+#+begin_src emacs-lisp
+  (global-visual-line-mode 1) ; Set words to wrap
+  
+  (scroll-bar-mode -1)  ;; Remove lateral scroll bar
+  (tool-bar-mode -1)    ;; Remove toolbar
+  (menu-bar-mode -1)    ;; Remove menu bar
+  ;; (tooltip-mode -1)     ;; TODO
+  (set-fringe-mode 5)   ;; Lateral Margin
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(custom-safe-themes
+     '("6b1abd26f3e38be1823bd151a96117b288062c6cde5253823539c6926c3bb178" default))
+   '(helm-minibuffer-history-key "M-p")
+   '(initial-frame-alist '((fullscreen . maximized))))
+  
+  
+  ;; Misc Stuff
+  (fset 'yes-or-no-p 'y-or-n-p) ;; Change prompt
+  (setq visible-bell t)         ;; Blink screen to represent a bell
+  
+  ;; TODO
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+        backup-by-copying t    ; Don't delink hardlinks
+        version-control t      ; Use version numbers on backups
+        delete-old-versions t  ; Automatically delete excess backups
+        kept-new-versions 20   ; how many of the newest versions to keep
+        kept-old-versions 5    ; and how many of the old
+        )
+  
+  ;; Controls the start screen (not needed)
+  (setq inhibit-startup-message nil)
+  
+  
+  ;; Date Format
+  (setq calendar-date-style "iso")
+#+end_src
+
+* Packages
+** Straight
+#+begin_src emacs-lisp
+  ;; straight.el
+  (setq straight-use-package-by-default t)
+  ;; (setq use-package-always-ensure t)  ;; TODO
+
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  ;; use-package
+  (straight-use-package 'use-package)
+#+end_src
+** General
+#+begin_src emacs-lisp
+  (use-package general
+    :config
+    (general-create-definer dio/leader-keys
+      :keymaps '(normal insert visual emacs)  ;; TODO
+      :prefix "SPC"
+      :global-prefix "C-SPC")  ;; TODO
+    (dio/leader-keys
+      "f" '(:ignore t :which-key "Files")
+      "f r" '(helm-recentf :which-key "Recent File")
+      "f f" '(helm-find-files :which-key "Find File")
+      ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
+      "f p" '((lambda() (interactive)(find-file "~/.emacs.d/init.org")) :which-key "init.org")
+      "f s" '(save-buffer :which-key "Save Buffer")
+      "g" '(:ignore t :which-key "Git")
+      "g s" '(magit-status :which-key "Status")
+      "t" '(:ignore t :which-key "Toggle")
+      "t w" '(global-visual-line-mode :which-key "Word Wrap")
+      "t t" '(toggle-truncate-lines :which-key "Line Wrap")
+      "b" '(:ignore t :which-key "Buffers")
+      "b b" '(helm-mini :which-key "List Buffers")
+      ))
+#+end_src
+** Evil
+#+begin_src emacs-lisp
+  ;; Evil
+  ;; C-z brings you to Emacs mode (where Evil isn't active)
+  ;; It is possible to start in a different mode (insert for instance) for a specific mode;
+  (use-package evil
+    ;; :after evil-leader ;; TODO: Not sure if this is the best practice here
+    :init
+    (setq evil-want-keybinding nil) ;; We are using `evil-collection`
+    (setq evil-want-integration t)
+    (setq evil-want-C-u-scroll t)  ;; Scrolls up instead of using Emacs' universal-prefix command
+    (setq evil-undo-system 'undo-fu)
+    (setq evil-search-module 'evil-search)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)  ;; C-H as Backspace in insert mode
+
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+    (dio/leader-keys
+      "w" '(evil-window-map :which-key "Window"))
+
+    ;; TODO (evil-set-initial-state 'NeoTree 'emacs))
+    )
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
+
+#+end_src
+** Helm
+*** Notes
+- To put the command in the minibuffer, hit =C-c C-y= on the highlighted command;
+- Show documentation with persistent action =(C-z)=;
+- Use =C-h m= within a helm command to see documentation about that command;
+*** Config
+#+begin_src emacs-lisp
+  ;; Helm
+  (use-package helm
+    :diminish  ;; Don't show in the mode line
+    :config
+    (helm-mode 1)
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-h a") 'helm-apropos)
+    (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
+    (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+    (define-key helm-map (kbd "C-z") #'helm-select-action)
+    (setq completion-styles `(basic partial-completion emacs22 initials,'flex))  ;; Fuzzy match
+    ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
+    ;; (setq helm-boring-buffer-regexp-list .....)
+    (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")  ;; TODO check this
+    (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))  ;; TODO check this
+    ;; From https://github.com/thierryvolpiatto/emacs-config/blob/main/init-helm.el
+    (setq helm-split-window-inside-p                nil
+          helm-always-two-windows                   t
+          helm-actions-inherit-frame-settings       t
+          helm-use-frame-when-more-than-two-windows t
+          helm-use-frame-when-dedicated-window      t
+          helm-autoresize-max-height                80 ; it is %.
+          helm-autoresize-min-height                20 ; it is %.
+          helm-buffers-fuzzy-matching               t
+          )
+    )
+
+  ;; (use-package helm-descbinds) ;; TODO
+
+#+end_src
+
+#+RESULTS:
+: t
+
+** Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    :config
+    (progn
+      (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+            treemacs-deferred-git-apply-delay      0.5
+            treemacs-directory-name-transformer    #'identity
+            treemacs-display-in-side-window        t
+            treemacs-eldoc-display                 t
+            treemacs-file-event-delay              5000
+            treemacs-file-extension-regex          treemacs-last-period-regex-value
+            treemacs-file-follow-delay             0.2
+            treemacs-file-name-transformer         #'identity
+            treemacs-follow-after-init             t
+            treemacs-expand-after-init             t
+            treemacs-git-command-pipe              ""
+            treemacs-goto-tag-strategy             'refetch-index
+            treemacs-indentation                   2
+            treemacs-indentation-string            " "
+            treemacs-is-never-other-window         nil
+            treemacs-max-git-entries               5000
+            treemacs-missing-project-action        'ask
+            treemacs-move-forward-on-expand        nil
+            treemacs-no-png-images                 nil
+            treemacs-no-delete-other-windows       t
+            treemacs-project-follow-cleanup        nil
+            treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+            treemacs-position                      'left
+            treemacs-read-string-input             'from-child-frame
+            treemacs-recenter-distance             0.1
+            treemacs-recenter-after-file-follow    nil
+            treemacs-recenter-after-tag-follow     nil
+            treemacs-recenter-after-project-jump   'always
+            treemacs-recenter-after-project-expand 'on-distance
+            treemacs-litter-directories            '("/node_modules" "/.venv" "/.cask")
+            treemacs-show-cursor                   nil
+            treemacs-show-hidden-files             t
+            treemacs-silent-filewatch              nil
+            treemacs-silent-refresh                nil
+            treemacs-sorting                       'alphabetic-asc
+            treemacs-space-between-root-nodes      t
+            treemacs-tag-follow-cleanup            t
+            treemacs-tag-follow-delay              1.5
+            treemacs-user-mode-line-format         nil
+            treemacs-user-header-line-format       nil
+            treemacs-width                         35
+            treemacs-width-is-initially-locked     t
+            treemacs-workspace-switch-cleanup      nil)
+  
+      ;; The default width and height of the icons is 22 pixels. If you are
+      ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;(treemacs-resize-icons 44)
+  
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (treemacs-fringe-indicator-mode 'always)
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null treemacs-python-executable)))
+        (`(t . t)
+         (treemacs-git-mode 'deferred))
+        (`(t . _)
+         (treemacs-git-mode 'simple))))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ;; ("C-x t 1"   . treemacs-delete-other-windows)
+          ;; ("C-x t t"   . treemacs)
+          ;; ("C-x t B"   . treemacs-bookmark)
+          ;; ("C-x t C-t" . treemacs-find-file)
+          ;; ("C-x t M-t" . treemacs-find-tag)
+      ))
+  
+  (dio/leader-keys
+    "a" '(:ignore t :which-key "apps")
+    "a t" '(:ignore t :which-key "treemacs")
+    "a t 1" '(treemacs-delete-other-windows :which-key "treemacs-delete-other-windows")
+    "a t B" '(treemacs-bookmark :which-key "treemacs-bookmark")
+    "a t t" '(treemacs :which-key "treemacs")
+    "a t C-t" '(treemacs-find-file :which-key "treemacs-find-file")
+    "a t M-t" '(treemacs-find-tag :which-key "treemacs-find-tag")
+  )
+  
+  (use-package treemacs-evil
+    :after (treemacs evil))
+  
+  (use-package treemacs-projectile
+    :after (treemacs projectile))
+  
+  (use-package treemacs-icons-dired
+    :after (treemacs dired)
+    :config (treemacs-icons-dired-mode))
+  
+  (use-package treemacs-magit
+    :after (treemacs magit))
+  
+  (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+    :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+    :config (treemacs-set-scope-type 'Perspectives))
+  
+  ;; Icon package
+  (use-package all-the-icons)
+  
+  (use-package treemacs-all-the-icons
+    :after (treemacs)
+    :config
+    (treemacs-load-theme "all-the-icons"))
+  ;; (setq treemacs-use-all-the-icons t)
+  ;; (treemacs-get-icon-value "org" t)
+#+end_src
+** Dired
+- `m` marks
+- `u` unmarks
+- `t` toggles the selection
+- `% m` mark files base on regex
+- `*` has a world inside
+- `g r` revert the dired buffer
+*** Actions
+- `S-RET` opens another dired buffer
+- `I` leaves a trace of directories
+- `C` copy the file (or marked files)
+- `D` deletes the file (or marked files)
+- `d` mark for deletion
+- `x` confirms deletion
+- `R` renames the file (or move, if you rename to a different folder)
+- `C-M-j` "doesn't use the suggestion of completion ;; TODO Not really necessary. Only ivy related, I guess
+- `Z` compress or uncompress file or marked files
+- `c` compress to a file
+- `S` symbolic links
+- `M` change file mode
+- `C-x C-q` allows you to change the dired buffer (for renaming, for instance).
+  - Use Z Z to commit changes or Z Q to abort.
+  - Don't forget %s ex command!
+- `&` runs a different program on this file (useful for images) (async)
+- `!` same, but sync
+*** Config
+#+begin_src emacs-lisp
+    (use-package dired
+      :ensure nil
+      :straight (:type built-in)  ;; TODO I had to add this, not sure why it doesn't work without it.
+      :commands (dired dired-jump)
+      :custom ((dired-listing-switches "-ahFgo --group-directories-first"))
+      :config
+      (add-hook 'dired-mode-hook 'auto-revert-mode)
+      (setq delete_by_moving-to-trash t)
+      (evil-collection-define-key 'normal 'dired-mode-map
+        "h" 'dired-up-directory
+        "l" 'dired-find-file)
+      (dio/leader-keys
+        "d" '(:ignore t :which-key "Dired")
+        "d d" '(dired :which-key "Dired")
+        "d j" '(dired-jump :which-key "Jump")))
+
+    (use-package all-the-icons-dired
+      :hook (dired-mode . all-the-icons-dired-mode))
+
+  ;; dired-single package can help with to avoid the `g r` command to update dired.
+  ;; dired-open package overrides default programs to open files in dired (like images or music files)
+#+end_src
+** Documentation
+#+begin_src emacs-lisp
+  (use-package helpful
+    :config
+    (global-set-key (kbd "C-h f") #'helpful-callable)
+    (global-set-key (kbd "C-h v") #'helpful-variable)
+    (global-set-key (kbd "C-h k") #'helpful-key)
+    (global-set-key (kbd "C-h C") #'helpful-command)
+    (global-set-key (kbd "C-h h") #'helpful-at-point)
+    )
+
+  (use-package elisp-demos
+    :config
+    (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+#+end_src
+** Other Packages
+#+begin_src emacs-lisp
+  ;; (use-package hydra)
+  ;; (defhydra hydra-text-scale (:timeout 5)
+    ;; ("j" text-scale-increase "in")
+    ;; ("k" text-scale-decrease "out")
+    ;; ("f" nil "finished" :exit t))
+
+  ;; (dio/leader-keys
+    ;; "t s" '(hydra-text-scale/body :which-key "Scale Text"))
+
+  (use-package undo-fu)
+
+  ;; Git gutter
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode 't))
+
+  ;; Beacon (highlight current line after move)
+  (use-package beacon
+    :config
+    (beacon-mode 1))
+
+  ;; Command-log-mode
+  ;; Shows the command on a buffer
+  ;; M-x clm/toggle-command-log-buffer
+  (defun dio/open-command-log ()
+    (interactive)
+    (global-command-log-mode)
+    (clm/toggle-command-log-buffer))
+
+  (use-package command-log-mode
+    :diminish
+    :config
+    (dio/leader-keys
+      "t c" '(dio/open-command-log :which-key "Command Log")))
+
+  ;; Which-key
+  (use-package which-key
+    :diminish  ;; Don't show in the mode line
+    :config
+    (add-hook 'after-init-hook 'which-key-mode)
+    (setq which-key-idle-delay 0.3))
+#+end_src
+
+* Window management
+** Tab bar mode
+Works like a "workspace".
+- =tab-bar-mode=
+- =tab-new= or =C-x t 2=
+#+begin_src emacs-lisp
+  ;; (setq tab-prefix-map "w T")
+  (dio/leader-keys
+    "w T" '(:ignore t :which-key "tab")
+    "w T <RET>" '(tab-bar-select-tab-by-name :which-key "tab-bar-select-tab-by-name")
+    "w T 0" '(tab-close :which-key "tab-close")
+    "w T 2" '(tab-new :which-key "tab-new")
+    "w T b" '(switch-to-buffer-other-tab :which-key "switch-to-buffer-other-tab")
+    "w T d" '(dired-other-tab :which-key "dired-other-tab")
+    "w T f" '(find-file-other-tab :which-key "find-file-other-tab")
+    "w T m" '(tab-move :which-key "tab-move")
+    "w T n" '(tab-next :which-key "tab-next")
+    "w T p" '(tab-previous :which-key "tab-previous")
+    "w T r" '(tab-rename :which-key "tab-rename")
+    "w T r" '(tab-rename :which-key "tab-rename")
+    "w T t" '(tab-bar-mode :which-key "tab-bar-mode")
+    "w T C-f" '(find-file-other-tab :which-key "find-file-other-tab")
+  )
+#+end_src
+** Config
+#+begin_src emacs-lisp
+  ;; (use-package winner-mode
+    ;; :ensure nil
+    ;; :bind (
+      ;; :map evil-window-map
+      ;; ("u" . winner-undo)
+      ;; ("C-r" . winner-redo)  ;; TODO: I am ovewriting the window rotate command here.
+      ;; )
+    ;; :config
+      ;; (winner-mode))
+
+  (winner-mode)
+
+  (dio/leader-keys
+    "w u" '(winner-undo :which-key "winner-undo")
+    "w C-r" '(winner-redo :which-key "winner-redo")
+    ;; TODO Create the archive subtree
+  )
+  ;; TODO: Set up these variables
+  ;; (setq windmove-default-keybindings)
+  ;; (setq windmove-swap-states-default-keybindings)
+  ;; (setq windmove-display-default-keybindings)
+  ;; (setq windmove-delete-default-keybindings)
+#+end_src
+
+* Programming
+** Projectile
+#+begin_src emacs-lisp
+  ;; Projectile
+  (use-package projectile
+    ;; :diminish projectile-mode
+    :config
+    (projectile-mode)
+    (dio/leader-keys
+      "p" '(projectile-command-map :which-key "Projectile"))
+    :init
+    (when (file-directory-p "~/pier/repos")
+      (setq projectile-project-search-path '("~/pier/repos")))
+    ;; (setq projectile-switch-project-action #'projectile-dired)
+    )
+#+end_src
+** Languages
+*** Python
+**** Setup
+#+begin_src shell
+# python3 -m pip install --upgrade python-lsp-server
+#+end_src
+**** lsp commands
+- `lsp-format-buffer`
+**** REPL
+`run-python`
+`python-shell-send-region`
+`python-shell-send-buffer`
+`python-shell-send-file`
+**** Config
+#+begin_src emacs-lisp
+   ;; (use-package python-mode
+     ;; :ensure nil
+     ;; :custom
+     ;; (python-shell-interpreter "python3"))
+
+   ;; (use-package virtualenvwrapper
+     ;; :config
+     ;; (setq projectile-switch-project-action 'venv-projectile-auto-workon)
+     ;; (venv-initialize-interactive-shells)
+     ;; (venv-initialize-eshell)
+     ;; (setq venv-dirlookup-names '(".venv" "pyenv" ".virtual"))
+   ;; )
+
+  (use-package python-mode
+    :ensure t
+    :hook (python-mode . lsp-deferred)
+    :custom
+    ;; NOTE: Set these if Python 3 is called "python3" on your system!
+    (python-shell-interpreter "python3")
+    ;; (dap-python-executable "python3")
+    ;; (dap-python-debugger 'debugpy)
+    ;; :config
+    ;; (require 'dap-python)
+    )
+
+  (use-package pyvenv
+    :config
+    (pyvenv-mode 1))
+#+end_src
+*** Markdown
+#+begin_src emacs-lisp
+
+   ;; Markdown-mode
+   (use-package markdown-mode
+     :commands (markdown-mode gfm-mode)
+     :mode (("README\\.md\\'" . gfm-mode)
+            ("\\.md\\'" . markdown-mode)
+            ("\\.markdown\\'" . markdown-mode))
+     :init (setq markdown-command "multimarkdown"))
+#+end_src
+** Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    ;; :config
+    ;; (evil-leader/set-key
+     ;; "g s" 'magit-status)
+    ;; :custom
+    ;; (magit-display-buffer-function #'magit-display-buffer-smae-window-except-diff-v1)
+    )
+
+  ;; Evil-Magit
+  ;; (use-package evil-magit
+    ;; :after magit)
+#+end_src
+** LSP
+*** Commands
+- `add-dir-local-variable`
+  - Remember to quote the command! e.g. "pytest"
+  - ! Makes it to not be asked again in the future
+*** Config
+#+begin_src emacs-lisp
+  ;; LSP-mode
+  (defun dio/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
+
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . dio/lsp-mode-setup)
+    :init
+    ;; (setq lsp-keymap-prefix "<SPC> l")  ;; TODO: Not working
+    (evil-define-key 'normal lsp-mode-map (kbd "<SPC> l") lsp-command-map)
+    ;; (setq lsp-command-map "<SPC> l")
+    :config
+    (lsp-enable-which-key-integration t)
+    ;; (setq lsp-keymap-prefix "<SPC> l")  ;; TODO: Not working
+    ;; (setq lsp-pyls-server-command "./.local/bin/pylsp")
+    (setq lsp-pylsp-server-command "/home/dionisius/.local/bin/pylsp")
+  )
+
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    ;; :custom
+    ;; (setq lsp-ui-doc-position 'bottom)
+    )
+
+  ;; Hierarchy tree of the code
+  ;; (use-package lsp-treemacs
+    ;; :after lsp)
+
+
+  ;; TODO: Check lsp-ui-peek-find-references
+#+end_src
+** Auto Complete
+#+begin_src emacs-lisp
+  ;; Company
+  ;; Auto-completion drop-down menu
+  (use-package company
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
+    :bind
+    (:map company-active-map
+          ("<tab>" . company-complete-selection))
+    (:map lsp-mode-map
+          ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+  ;; TODO: Is it useful?
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+#+end_src
+
+* Spell Checking
+- M-$ allows you to check the possible candidates for the word under the cursor;
+#+begin_src emacs-lisp
+  (with-eval-after-load "ispell"
+    (setq ispell-program-name "/usr/bin/hunspell")
+    (setq ispell-dictionary "en_CA,pt_BR")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_CA,pt_BR"))
+
+  (dio/leader-keys
+    "s" '(:ignore t :which-key "spelling")
+    "s s" '(flyspell-mode :which-key "flyspell-mode")
+    "s c" '(ispell-word :which-key "check cursor"))
+#+end_src
+
+* Terminal
+** vterm
+#+begin_src emacs-lisp
+  (use-package vterm
+    :commands vterm
+    :config
+    (setq term-promt-regexp "^[^#$%>\n]*[#$%>] *")
+    (setq vterm-max-scrollback 10000))
+#+end_src
+
+* ORG
+** General config
+#+begin_src emacs-lisp
+(use-package org
+  :config
+  (setq org-startup-folded t)
+  (setq org-startup-indented t)
+  (setq org-agenda-files (list "~/pier/pier.org" "~/Documents/dio.org"))
+  (setq org-hierarchical-todo-statistics nil) ;; TODO: Check this
+  (setq org-todo-keywords '((sequence "TODO(t)" "ONGO(o)" "|" "DONE(d!)" "WONT(w!)")))
+  (setq org-todo-keyword-faces '(("ONGO" . (:foreground "coral" :weight bold))))
+
+  (setq org-log-done 'time)  ;; TODO: Do i need the 'time?
+
+  (setq org-src-preserve-indentation t)
+
+  (dio/leader-keys
+    "o" '(:ignore t :which-key "Org")
+    "o a" '(org-agenda :which-key "Agenda")
+    "o d" '(:ignore t :which-key "Dates")
+    "o d d" '(org-deadline :which-key "Deadline")
+    "o d s" '(org-schedule :which-key "Schedule")
+    "o d t" '(org-time-stamp :which-key "Timestamp")
+    ;; TODO Create the archive subtree
+    )
+)
+
+(use-package evil-org
+  :after (evil org)
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook (lambda() (evil-org-set-key-theme '(navigation
+                                                                    insert
+                                                                    textobjects
+                                                                    additional
+                                                                    calendar)))))
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+;; Org Babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)))
+
+;; (setq org-confirm-babel-evaluate nil)
+(require 'org-tempo)
+
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+
+(setq org-cycle-separator-lines 1)  ;; Controls the number of empty lines needed to appear between two collapsed trees.
+#+end_src
+** Visual
+#+begin_src emacs-lisp
+  (use-package org-superstar  ;; Pretify bullets and Org in general
+    :config
+    (add-hook 'org-mode-hook (lambda() (org-superstar-mode 1))))
+  
+(setq org-return-follows-link nil)
+(setq org-blank-before-new-entry nil)
+;; (setq org-log-done time)
+#+end_src
+** Auto-tangle configuration files
+#+begin_src emacs-lisp
+  (defun dio/org-babel-tangle-config ()
+    (when (string-equal (buffer-file-name)
+                        (expand-file-name "~/.emacs.d/init.org"))
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dio/org-babel-tangle-config)))
+#+end_src
+** LaTeX
+#+begin_src emacs-lisp
+  (use-package org-fragtog
+    :config
+    (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+  (setq org-format-latex-options (quote (:foreground default :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 2.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
+#+end_src
+
+* Visuals
+#+begin_src emacs-lisp
+  ;; Font
+  ;; (set-face-attribute ...)
+  
+  ;; Line numbers
+  (global-display-line-numbers-mode t)         ;; Show line number
+  (setq display-line-numbers-type 'relative) ;; *Relative line number
+  (column-number-mode)                       ;; Show column mode in the mode line
+  
+  ;; Highligths
+  (global-hl-line-mode 1) ;; Highlight current line
+  (show-paren-mode 1)     ;; Highlight matching bracket
+  
+  ;; White characters
+  (setq-default show-trailing-whitespace t)
+  
+  (use-package hl-todo ;; TODO: Fix this
+    :hook (prog-mode . hl-todo-mode)
+    :config
+    ;; (setq global-hl-todo-mode t)
+    (setq hl-todo-keyword-faces
+      '(("TODO" warning bold)
+       ("NOTE" success bold)
+       ("FIXME" error bold)))
+  )
+  
+  ;; Doom-themes
+  (use-package doom-themes
+    :config (load-theme 'doom-gruvbox t))
+  
+  ;; Doom-modeline
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1)
+    :custom (doom-modeline-height 35))
+  
+  ;; Rainbow-delimiters
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+  
+  ;; (use-package eterm-256color
+    ;; :hook (term-mode . eterm-256color-mode))
+  
+  ;; Remove line number for certain modes
+  (dolist (mode '(treemacs-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook
+                  term-mode-hook
+                  vterm-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  
+  (use-package dashboard
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-navigator t)
+    ;; (dashboard-projects-backend)
+    (setq dashboard-items '((recents . 10)
+                            (bookmarks . 5)
+                            (projects . 5)
+                            (agenda . 20)
+                            (registers . 5)))
+    (setq dashboard-set-footer nil)
+    )
+#+end_src
+
+* Key Bindings
+#+begin_src emacs-lisp
+  ;; Make ESC quit prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun dio/restart-emacs-open-frames ()
+    (interactive)
+    (setq restart-emacs-restore-frames t)
+    (restart-emacs))
+  
+  (use-package restart-emacs
+    :config
+    (dio/leader-keys
+      "q" '(:ignore t :which-key "quit")
+      "q q" '(save-buffers-kill-terminal :which-key "save and quit")
+      "q r" '(restart-emacs :which-key "restart")
+      "q R" '(dio/restart-emacs-open-frames :which-key "restart reopen frames")
+      ))
+#+end_src
+
