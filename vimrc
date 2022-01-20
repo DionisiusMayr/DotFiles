@@ -376,7 +376,7 @@ function! NonintrusiveGitGrep(term)
 endfunction
 
 command! -nargs=1 GGrep call NonintrusiveGitGrep(<q-args>)
-nmap <leader>gs :Gstatus<CR>
+nmap <leader>gs :Git<CR>
 nmap <leader>gg :copen<CR>:GGrep 
 nmap <leader>gl :Extradite!<CR>
 nmap <leader>gd :Gdiff<CR>
