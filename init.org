@@ -3,7 +3,6 @@
 
 * Notes
   :diminish ;; Don't show in the mode line
-
 * Header
 #+begin_src emacs-lisp
   (setq user-emacs-directory "/home/dionisius/.emacs.d")
@@ -11,7 +10,6 @@
   ;; https://jamiecollinson.com/blog/my-emacs-config/
   (setq package-enable-at-startup nil)  ; TODO: Prevents a second package load and slightly improves startup time
 #+end_src
-
 * Preferences
 #+begin_src emacs-lisp
   (global-visual-line-mode 1) ; Set words to wrap
@@ -51,7 +49,6 @@
   ;; Date Format
   (setq calendar-date-style "iso")
 #+end_src
-
 * Packages
 ** Straight
 #+begin_src emacs-lisp
@@ -410,7 +407,6 @@
 (use-package yasnippet-snippets
   :ensure t)
 #+end_src
-
 * Window management
 ** Tab bar mode
 Works like a "workspace".
@@ -460,7 +456,6 @@ Works like a "workspace".
   ;; (setq windmove-display-default-keybindings)
   ;; (setq windmove-delete-default-keybindings)
 #+end_src
-
 * Programming
 ** Projectile
 #+begin_src emacs-lisp
@@ -621,7 +616,6 @@ Works like a "workspace".
   (use-package company-box
     :hook (company-mode . company-box-mode))
 #+end_src
-
 * Spell Checking
 - M-$ allows you to check the possible candidates for the word under the cursor;
 #+begin_src emacs-lisp
@@ -636,7 +630,6 @@ Works like a "workspace".
     "s s" '(flyspell-mode :which-key "flyspell-mode")
     "s c" '(ispell-word :which-key "check cursor"))
 #+end_src
-
 * Terminal
 ** vterm
 #+begin_src emacs-lisp
@@ -646,7 +639,6 @@ Works like a "workspace".
     (setq term-promt-regexp "^[^#$%>\n]*[#$%>] *")
     (setq vterm-max-scrollback 10000))
 #+end_src
-
 * ORG
 ** General config
 #+begin_src emacs-lisp
@@ -656,11 +648,12 @@ Works like a "workspace".
   (setq org-startup-indented t)
   (setq org-agenda-files (list "~/pier/pier.org" "~/Documents/dio.org"))
   (setq org-hierarchical-todo-statistics nil) ;; TODO: Check this
-  (setq org-todo-keywords '((sequence "TODO(t)" "ONGO(o)" "|" "DONE(d!)" "WONT(w!)")))
-  (setq org-todo-keyword-faces '(("ONGO" . (:foreground "coral" :weight bold))))
 
-  ;; (setq org-log-done 'time)  ;; TODO: Do i need the 'time?
-  (setq org-log-done-with-time nil)
+  ;; You can add special markers after each keyword (d!) or (d@) to record the timestamp
+  ;; of the state transition or record it and add a note (@)
+  (setq org-todo-keywords '((sequence "TODO(t)" "ONGO(o)" "|" "DONE(d)" "WONT(w)")))
+  (setq org-todo-keyword-faces '(("ONGO" . (:foreground "coral" :weight bold))))
+  (setq org-log-done nil)
 
   (setq org-src-preserve-indentation t)
 
@@ -737,22 +730,12 @@ Works like a "workspace".
 #+end_src
 *** AUCTeX
 #+begin_src emacs-lisp
-; Not sure if I need this
-  ; (use-package tex
-    ; :straight auctex)
-;; (use-package auctex
-    ;; :ensure t
-    ;; ;; :defer t
-    ;; :config
-    ;; (setq TeX-view-program-selection '((output-pdf "Okular"))))
-
 (use-package tex
     :straight auctex
     :defer t
     :config
     (setq TeX-view-program-selection '((output-pdf "Okular"))))
 #+end_src
-
 * Visuals
 #+begin_src emacs-lisp
   ;; Font
@@ -820,7 +803,6 @@ Works like a "workspace".
     (setq dashboard-set-footer nil)
     )
 #+end_src
-
 * Key Bindings
 #+begin_src emacs-lisp
   ;; Make ESC quit prompts
