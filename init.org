@@ -48,7 +48,6 @@
   ;; Controls the start screen (not needed)
   (setq inhibit-startup-message nil)
 
-
   ;; Date Format
   (setq calendar-date-style "iso")
 #+end_src
@@ -94,8 +93,8 @@
       "g" '(:ignore t :which-key "Git")
       "g s" '(magit-status :which-key "Status")
       "t" '(:ignore t :which-key "Toggle")
-      "t w" '(global-visual-line-mode :which-key "Word Wrap")
       "t t" '(toggle-truncate-lines :which-key "Line Wrap")
+      "t w" '(global-visual-line-mode :which-key "Word Wrap")
       "b" '(:ignore t :which-key "Buffers")
       "b b" '(helm-mini :which-key "List Buffers")
       ))
@@ -395,6 +394,22 @@
     (add-hook 'after-init-hook 'which-key-mode)
     (setq which-key-idle-delay 0.3))
 #+end_src
+** Snippets
+*** Yasnippets
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config
+    (yas-global-mode 1)
+    (dio/leader-keys
+      "i"   '(:ignore t :which-key "Insert")
+      "i c" '(yas-new-snippet :which-key "Create Snippet")
+      "i e" '(yas-view-snippet-file :which-key "Edit snippet file")
+      "i s" '(yas-insert-snippet :which-key "Insert Snippet")))
+
+(use-package yasnippet-snippets
+  :ensure t)
+#+end_src
 
 * Window management
 ** Tab bar mode
@@ -574,17 +589,33 @@ Works like a "workspace".
 #+begin_src emacs-lisp
   ;; Company
   ;; Auto-completion drop-down menu
+  ;; (use-package company
+    ;; :after lsp-mode
+    ;; :hook (lsp-mode . company-mode)
+    ;; :bind
+    ;; (:map company-active-map
+          ;; ("<tab>" . company-complete-selection))
+    ;; (:map lsp-mode-map
+          ;; ("<tab>" . company-indent-or-complete-common))
+    ;; :custom
+    ;; (company-minimum-prefix-length 1)
+    ;; (company-idle-delay 0.0))
   (use-package company
-    :after lsp-mode
-    :hook (lsp-mode . company-mode)
+    :ensure t
+    :defer t
+    :init (global-company-mode)
     :bind
-    (:map company-active-map
-          ("<tab>" . company-complete-selection))
-    (:map lsp-mode-map
-          ("<tab>" . company-indent-or-complete-common))
+        (:map company-active-map
+            ("<tab>" . company-complete-selection))
+        ;; (:map lsp-mode-map
+            ;; ("<tab>" . company-indent-or-complete-common))
     :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
+        (company-minimum-prefix-length 1)
+        (company-idle-delay 0.0)
+    :config
+        (dio/leader-keys
+            "t a" '(company-mode :which-key "Auto Complete")))
+
 
   ;; TODO: Is it useful?
   (use-package company-box
@@ -628,7 +659,8 @@ Works like a "workspace".
   (setq org-todo-keywords '((sequence "TODO(t)" "ONGO(o)" "|" "DONE(d!)" "WONT(w!)")))
   (setq org-todo-keyword-faces '(("ONGO" . (:foreground "coral" :weight bold))))
 
-  (setq org-log-done 'time)  ;; TODO: Do i need the 'time?
+  ;; (setq org-log-done 'time)  ;; TODO: Do i need the 'time?
+  (setq org-log-done-with-time nil)
 
   (setq org-src-preserve-indentation t)
 
@@ -689,7 +721,7 @@ Works like a "workspace".
 #+begin_src emacs-lisp
   (defun dio/org-babel-tangle-config ()
     (when (string-equal (buffer-file-name)
-                        (expand-file-name "~/.emacs.d/init.org"))
+                        (expand-file-name "~/repos/DotFiles/init.org"))
       (let ((org-confirm-babel-evaluate nil))
         (org-babel-tangle))))
 
@@ -702,6 +734,23 @@ Works like a "workspace".
     (add-hook 'org-mode-hook 'org-fragtog-mode))
 
   (setq org-format-latex-options (quote (:foreground default :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 2.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
+#+end_src
+*** AUCTeX
+#+begin_src emacs-lisp
+; Not sure if I need this
+  ; (use-package tex
+    ; :straight auctex)
+;; (use-package auctex
+    ;; :ensure t
+    ;; ;; :defer t
+    ;; :config
+    ;; (setq TeX-view-program-selection '((output-pdf "Okular"))))
+
+(use-package tex
+    :straight auctex
+    :defer t
+    :config
+    (setq TeX-view-program-selection '((output-pdf "Okular"))))
 #+end_src
 
 * Visuals
