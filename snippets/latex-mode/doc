@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: doc
+# key: doc
+# --
+\\documentclass{article}
+\\usepackage[utf8]{inputenc}
+
+\\title{$1}
+\\date{$2}
+\\author{Dionisius Mayr}
+
+\\begin{document}
+\\maketitle
+$0
+\\end{document}
