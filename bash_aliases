@@ -29,7 +29,8 @@ alias ebal='vim ~/.bash_aliases'
 alias ebis='vim ~/repos/DotFiles/install_softwares.sh'
 
 alias apti='sudo apt install'
-alias apts='sudo apt-cache search'
+alias apts='apt-cache search'
+alias aptp='apt-cache policy'
 alias aptu='sudo apt update && sudo apt upgrade'
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -46,6 +47,8 @@ alias ipy='ipython3'
 alias  senv='source venv/bin/activate'
 alias  cenv='! [ -d ./venv/ ] && python3 -m virtualenv venv'
 alias csenv='cenv && senv && [ -f ./requirements.txt ] && pip install -r requirements.txt'
+## Jupyter
+alias clean_checkpoints='rm -rf `find -type d -name .ipynb_checkpoints`'
 nbd() {
     nbdime diff "$1" "$2" | bat --style="plain"
 }
