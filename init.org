@@ -289,12 +289,12 @@
 
   (dio/leader-keys
     "a" '(:ignore t :which-key "apps")
-    "a t" '(:ignore t :which-key "treemacs")
-    "a t 1" '(treemacs-delete-other-windows :which-key "treemacs-delete-other-windows")
-    "a t B" '(treemacs-bookmark :which-key "treemacs-bookmark")
-    "a t t" '(treemacs :which-key "treemacs")
-    "a t C-t" '(treemacs-find-file :which-key "treemacs-find-file")
-    "a t M-t" '(treemacs-find-tag :which-key "treemacs-find-tag")
+    "a f" '(:ignore t :which-key "treemacs")
+    "a f 1" '(treemacs-delete-other-windows :which-key "treemacs-delete-other-windows")
+    "a f B" '(treemacs-bookmark :which-key "treemacs-bookmark")
+    "a f t" '(treemacs :which-key "treemacs")
+    "a f C-t" '(treemacs-find-file :which-key "treemacs-find-file")
+    "a f M-t" '(treemacs-find-tag :which-key "treemacs-find-tag")
   )
 
   (use-package treemacs-evil
@@ -424,6 +424,10 @@
     :config
     (dio/leader-keys
       "t c" '(dio/open-command-log :which-key "Command Log")))
+
+  (add-hook
+    'command-log-mode-hook
+    (lambda() (setq show-trailing-whitespace nil)))
 
   ;; Which-key
   (use-package which-key
@@ -673,12 +677,20 @@ Works like a "workspace".
 #+end_src
 * Terminal
 ** vterm
+- Might need to install =libtool-bin= as well as =cmake=.
 #+begin_src emacs-lisp
   (use-package vterm
     :commands vterm
     :config
     (setq term-promt-regexp "^[^#$%>\n]*[#$%>] *")
     (setq vterm-max-scrollback 10000))
+
+  (dio/leader-keys
+    "a t" '(vterm :which-key "Terminal"))
+
+  (add-hook
+    'vterm-mode-hook
+    (lambda() (setq show-trailing-whitespace nil)))
 #+end_src
 * ORG
 ** General config
