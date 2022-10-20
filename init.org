@@ -131,6 +131,43 @@
   :config
   (evil-collection-init))
 
+
+;; TODO Change this to work with C-x
+;; I don't know what C-x is.
+(use-package evil-numbers
+  :ensure t
+  :bind (:map evil-normal-state-map
+              ("C-a" . evil-numbers/inc-at-pt)
+              ("C-S-a" . evil-numbers/dec-at-pt)))
+
+;; Fix the behavior of * and #.
+;; From: https://github.com/ChanderG/dotfiles/blob/master/emacs.org
+(evil-define-motion evil-search-symbol-backward (count)
+  "Simply pass in true for the symbol param of the original motion."
+  (evil-search-word-backward count t))
+(define-key evil-motion-state-map "#" 'evil-search-symbol-backward)
+
+(evil-define-motion evil-search-symbol-forward (count)
+  "Simply pass in true for the symbol param of the original motion."
+  (evil-search-word-forward count t))
+(define-key evil-motion-state-map "*" 'evil-search-symbol-forward)
+
+(use-package evil-commentary
+  :ensure t
+  :bind (:map evil-normal-state-map
+         ("gc" . evil-commentary)
+         ("gy" . evil-commentary-yank)))  ;; TODO Not sure if `gy` is really necessary
+
+;; TODO Commented for now, but should check this latter.
+(defun ffap-noprompt ()
+  "Repackaged ffap that guesses the file under string and jumps to it if possible. Does nothing if nothing useful is found. Does not prompt the user in any case."
+  (interactive)
+  (let ((file-guess (ffap-guess-file-name-at-point)))
+    (if (equal "~/" file-guess)
+      (message "No file found under cursor.")
+      (find-file file-guess))))
+
+(define-key evil-normal-state-map "gf" 'ffap-noprompt)
 #+end_src
 ** Helm
 *** Notes
