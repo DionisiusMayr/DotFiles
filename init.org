@@ -1,6 +1,9 @@
 #+TITLE Emacs configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 
+
+ #+STARTUP: showeverything
+
 * Notes
   :diminish ;; Don't show in the mode line
 * Header
@@ -69,7 +72,6 @@
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-  ;; use-package
   (straight-use-package 'use-package)
 #+end_src
 ** General
@@ -98,34 +100,36 @@
 #+end_src
 ** Evil
 #+begin_src emacs-lisp
-  ;; Evil
-  ;; C-z brings you to Emacs mode (where Evil isn't active)
-  ;; It is possible to start in a different mode (insert for instance) for a specific mode;
-  (use-package evil
-    ;; :after evil-leader ;; TODO: Not sure if this is the best practice here
-    :init
-    (setq evil-want-keybinding nil) ;; We are using `evil-collection`
-    (setq evil-want-integration t)
-    (setq evil-want-C-u-scroll t)  ;; Scrolls up instead of using Emacs' universal-prefix command
-    (setq evil-undo-system 'undo-fu)
-    (setq evil-search-module 'evil-search)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)  ;; C-H as Backspace in insert mode
+;; Evil
+;; C-z brings you to Emacs mode (where Evil isn't active)
+;; It is possible to start in a different mode (insert for instance) for a specific mode;
+(use-package evil
+  ;; :after evil-leader ;; TODO: Not sure if this is the best practice here
+  :init
+  (setq evil-want-keybinding nil) ;; We are using `evil-collection`
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)  ;; Scrolls up instead of using Emacs' universal-prefix command
+  (setq evil-undo-system 'undo-fu)
+  ;; TODO: Which search module should I use?
+  ;; The original value was `isearch`, but I was using `evil-search`
+  (setq evil-search-module 'evil-search)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)  ;; C-H as Backspace in insert mode
 
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-    (dio/leader-keys
-      "w" '(evil-window-map :which-key "Window"))
+  (dio/leader-keys
+    "w" '(evil-window-map :which-key "Window"))
 
-    ;; TODO (evil-set-initial-state 'NeoTree 'emacs))
-    )
+  ;; TODO (evil-set-initial-state 'NeoTree 'emacs))
+  )
 
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 #+end_src
 ** Helm
@@ -336,11 +340,11 @@
 #+begin_src emacs-lisp
   (use-package helpful
     :config
-    (global-set-key (kbd "C-h f") #'helpful-callable)
-    (global-set-key (kbd "C-h v") #'helpful-variable)
-    (global-set-key (kbd "C-h k") #'helpful-key)
     (global-set-key (kbd "C-h C") #'helpful-command)
+    (global-set-key (kbd "C-h f") #'helpful-callable)
     (global-set-key (kbd "C-h h") #'helpful-at-point)
+    (global-set-key (kbd "C-h k") #'helpful-key)
+    (global-set-key (kbd "C-h v") #'helpful-variable)
     )
 
   (use-package elisp-demos
@@ -824,4 +828,3 @@ Works like a "workspace".
       "q R" '(dio/restart-emacs-open-frames :which-key "restart reopen frames")
       ))
 #+end_src
-
