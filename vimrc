@@ -130,15 +130,15 @@ set startofline			" Go to the first character after moving
 set nrformats-=octal	" Do not treat numbers starting with 0 to be octal
 
 try
-    " colorscheme solarized 
+    " colorscheme solarized
     " let g:solarized_termcolors=256
     " colorscheme Monokai
     " colorscheme seoul256
     " let g:seoul256_background=236
-    " colorscheme gruvbox
+    " colorscheme embark
+    colorscheme gruvbox
     " set background=dark
     " colorscheme jellybeans
-    colorscheme embark
 catch
 endtry
 
