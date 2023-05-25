@@ -27,9 +27,8 @@
    ;; If there is more than one, they won't work right.
    '(custom-safe-themes
      '("6b1abd26f3e38be1823bd151a96117b288062c6cde5253823539c6926c3bb178" default))
-   '(helm-minibuffer-history-key "M-p")
+   ;; '(helm-minibuffer-history-key "M-p")
    '(initial-frame-alist '((fullscreen . maximized))))
-
 
   ;; Misc Stuff
   (fset 'yes-or-no-p 'y-or-n-p) ;; Change prompt
@@ -167,47 +166,89 @@
 
 (define-key evil-normal-state-map "gf" 'ffap-noprompt)
 #+end_src
-** Helm
-*** Notes
+** Completion UI
+*** Vertico
+#+begin_src emacs-lisp
+(use-package vertico
+  :bind (:map minibuffer-local-map
+              ("C-w" . backward-kill-word))
+  :config
+  (setq vertico-cycle t)  ;; Wrap around the bottom/top of the list
+  (setq vertico-scroll-margin 2)
+  ;; (setq vertico-resize t)
+  (setq vertico-count 15)  ;; Entries in the list
+
+  ;; Make it case insensitive
+  (setq read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t
+        completion-ignore-case t)
+  :init
+  (vertico-mode)
+  )
+
+;; For vertico, shows the recently used on top of the list
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(use-package orderless
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+  :after vertico
+  :ensure t
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+#+end_src
+*** Helm
+**** Notes
 - To put the command in the minibuffer, hit =C-c C-y= on the highlighted command;
 - Show documentation with persistent action =(C-z)=;
 - Use =C-h m= within a helm command to see documentation about that command;
-*** Config
+**** Config
 #+begin_src emacs-lisp
   ;; Helm
-  (use-package helm
-    :diminish  ;; Don't show in the mode line
-    :config
-    (helm-mode 1)
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-h a") 'helm-apropos)
-    (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
-    (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
-    (define-key helm-map (kbd "C-z") #'helm-select-action)
-    (setq completion-styles `(basic partial-completion emacs22 initials,'flex))  ;; Fuzzy match
-    ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
-    ;; (setq helm-boring-buffer-regexp-list .....)
-    (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")  ;; TODO check this
-    (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))  ;; TODO check this
-    ;; From https://github.com/thierryvolpiatto/emacs-config/blob/main/init-helm.el
-    (setq helm-split-window-inside-p                nil
-          helm-always-two-windows                   t
-          helm-actions-inherit-frame-settings       t
-          helm-use-frame-when-more-than-two-windows t
-          helm-use-frame-when-dedicated-window      t
-          helm-autoresize-max-height                80 ; it is %.
-          helm-autoresize-min-height                20 ; it is %.
-          helm-buffers-fuzzy-matching               t
-          )
-    )
+  ;; (use-package helm
+  ;;   :diminish  ;; Don't show in the mode line
+  ;;   :config
+  ;;   (helm-mode 1)
+  ;;   (global-set-key (kbd "M-x") 'helm-M-x)
+  ;;   (global-set-key (kbd "C-h a") 'helm-apropos)
+  ;;   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
+  ;;   (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+  ;;   (define-key helm-map (kbd "C-z") #'helm-select-action)
+  ;;   (setq completion-styles `(basic partial-completion emacs22 initials,'flex))  ;; Fuzzy match
+  ;;   ;; (setq helm-display-function #'helm-display-buffer-in-own-frame)
+  ;;   ;; (setq helm-boring-buffer-regexp-list .....)
+  ;;   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")  ;; TODO check this
+  ;;   (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))  ;; TODO check this
+  ;;   ;; From https://github.com/thierryvolpiatto/emacs-config/blob/main/init-helm.el
+  ;;   (setq helm-split-window-inside-p                nil
+  ;;         helm-always-two-windows                   t
+  ;;         helm-actions-inherit-frame-settings       t
+  ;;         helm-use-frame-when-more-than-two-windows t
+  ;;         helm-use-frame-when-dedicated-window      t
+  ;;         helm-autoresize-max-height                80 ; it is %.
+  ;;         helm-autoresize-min-height                20 ; it is %.
+  ;;         helm-buffers-fuzzy-matching               t
+  ;;         )
+    ;; (dio/leader-keys
+      ;; "f r" '(helm-recentf :which-key "Recent File")
+      ;; "f f" '(helm-find-files :which-key "Find File")
+      ;; "b b" '(helm-mini :which-key "List Buffers")
+      ;; ))
+  ;;   )
 
   ;; (use-package helm-descbinds) ;; TODO
-
 #+end_src
-
-#+RESULTS:
-: t
-
 ** Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
