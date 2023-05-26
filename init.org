@@ -863,6 +863,8 @@ Works like a "workspace".
   ;; Doom-themes
   (use-package doom-themes
     :config (load-theme 'doom-gruvbox t))
+    ;; :config (load-theme 'doom-gruvbox-light t))
+    ;; :config (load-theme 'doom-flatwhite t))
 
   ;; Doom-modeline
   (use-package doom-modeline
