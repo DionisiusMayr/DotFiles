@@ -71,6 +71,14 @@
 
   (straight-use-package 'use-package)
 #+end_src
+** All the icons
+*** Installation
+Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
+*** Config
+#+begin_src emacs-lisp
+    (use-package all-the-icons)
+        ;; :if (display-graphic-p))
+#+end_src
 ** General
 #+begin_src emacs-lisp
   (use-package general
@@ -352,9 +360,6 @@
   (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
     :after (treemacs persp-mode) ;;or perspective vs. persp-mode
     :config (treemacs-set-scope-type 'Perspectives))
-
-  ;; Icon package
-  (use-package all-the-icons)
 
   (use-package treemacs-all-the-icons
     :after (treemacs)
