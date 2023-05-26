@@ -743,7 +743,7 @@ Works like a "workspace".
   :config
   (setq org-startup-folded t)
   (setq org-startup-indented t)
-  (setq org-agenda-files (list "~/pier/pier.org" "~/Documents/dio.org"))
+  (setq org-agenda-files (list "~/Documents/dio.org"))
   (setq org-hierarchical-todo-statistics nil) ;; TODO: Check this
 
   ;; You can add special markers after each keyword (d!) or (d@) to record the timestamp
