@@ -503,22 +503,22 @@ Works like a "workspace".
 - =tab-new= or =C-x t 2=
 #+begin_src emacs-lisp
   ;; (setq tab-prefix-map "w T")
-  (dio/leader-keys
-    "w T" '(:ignore t :which-key "tab")
-    "w T <RET>" '(tab-bar-select-tab-by-name :which-key "tab-bar-select-tab-by-name")
-    "w T 0" '(tab-close :which-key "tab-close")
-    "w T 2" '(tab-new :which-key "tab-new")
-    "w T b" '(switch-to-buffer-other-tab :which-key "switch-to-buffer-other-tab")
-    "w T d" '(dired-other-tab :which-key "dired-other-tab")
-    "w T f" '(find-file-other-tab :which-key "find-file-other-tab")
-    "w T m" '(tab-move :which-key "tab-move")
-    "w T n" '(tab-next :which-key "tab-next")
-    "w T p" '(tab-previous :which-key "tab-previous")
-    "w T r" '(tab-rename :which-key "tab-rename")
-    "w T r" '(tab-rename :which-key "tab-rename")
-    "w T t" '(tab-bar-mode :which-key "tab-bar-mode")
-    "w T C-f" '(find-file-other-tab :which-key "find-file-other-tab")
-  )
+  ;; (dio/leader-keys
+    ;; "w T" '(:ignore t :which-key "tab")
+    ;; "w T <RET>" '(tab-bar-select-tab-by-name :which-key "tab-bar-select-tab-by-name")
+    ;; "w T 0" '(tab-close :which-key "tab-close")
+    ;; "w T 2" '(tab-new :which-key "tab-new")
+    ;; "w T b" '(switch-to-buffer-other-tab :which-key "switch-to-buffer-other-tab")
+    ;; "w T d" '(dired-other-tab :which-key "dired-other-tab")
+    ;; "w T f" '(find-file-other-tab :which-key "find-file-other-tab")
+    ;; "w T m" '(tab-move :which-key "tab-move")
+    ;; "w T n" '(tab-next :which-key "tab-next")
+    ;; "w T p" '(tab-previous :which-key "tab-previous")
+    ;; "w T r" '(tab-rename :which-key "tab-rename")
+    ;; "w T r" '(tab-rename :which-key "tab-rename")
+    ;; "w T t" '(tab-bar-mode :which-key "tab-bar-mode")
+    ;; "w T C-f" '(find-file-other-tab :which-key "find-file-other-tab")
+  ;; )
 #+end_src
 ** Config
 #+begin_src emacs-lisp
