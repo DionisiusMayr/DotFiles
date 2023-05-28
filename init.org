@@ -81,27 +81,28 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
 #+end_src
 ** General
 #+begin_src emacs-lisp
-  (use-package general
-    :config
-    (general-create-definer dio/leader-keys
-      :keymaps '(normal insert visual emacs)  ;; TODO
-      :prefix "SPC"
-      :global-prefix "C-SPC")  ;; TODO
-    (dio/leader-keys
-      "f" '(:ignore t :which-key "Files")
-      "f r" '(helm-recentf :which-key "Recent File")
-      "f f" '(helm-find-files :which-key "Find File")
-      ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
-      "f p" '((lambda() (interactive)(find-file "~/repos/DotFiles/init.org")) :which-key "init.org")
-      "f s" '(save-buffer :which-key "Save Buffer")
-      "g" '(:ignore t :which-key "Git")
-      "g s" '(magit-status :which-key "Status")
-      "t" '(:ignore t :which-key "Toggle")
-      "t t" '(toggle-truncate-lines :which-key "Line Wrap")
-      "t w" '(global-visual-line-mode :which-key "Word Wrap")
-      "b" '(:ignore t :which-key "Buffers")
-      "b b" '(helm-mini :which-key "List Buffers")
-      ))
+(use-package general
+  :config
+  (general-create-definer dio/leader-keys
+    :keymaps '(normal insert visual emacs)  ;; TODO
+    :prefix "SPC"
+    :global-prefix "C-SPC")  ;; TODO
+  (dio/leader-keys
+    "f" '(:ignore t :which-key "Files")
+    ;; "f r" '(helm-recentf :which-key "Recent File")
+    "f r" '(find-file :which-key "Recent File")
+    "f f" '(find-file :which-key "Find File")
+    ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
+    "f p" '((lambda() (interactive)(find-file "~/repos/DotFiles/init.org")) :which-key "init.org")
+    "f s" '(save-buffer :which-key "Save Buffer")
+    "g" '(:ignore t :which-key "Git")
+    "g s" '(magit-status :which-key "Status")
+    "t" '(:ignore t :which-key "Toggle")
+    "t t" '(toggle-truncate-lines :which-key "Line Wrap")
+    "t w" '(global-visual-line-mode :which-key "Word Wrap")
+    "b" '(:ignore t :which-key "Buffers")
+    "b b" '(switch-to-buffer :which-key "List Buffers")
+    ))
 #+end_src
 ** Evil
 #+begin_src emacs-lisp
