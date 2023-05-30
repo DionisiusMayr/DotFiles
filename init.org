@@ -118,7 +118,7 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
   (setq evil-undo-system 'undo-fu)
   ;; TODO: Which search module should I use?
   ;; The original value was `isearch`, but I was using `evil-search`
-  (setq evil-search-module 'evil-search)
+  (setq evil-search-module 'isearch)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)  ;; C-H as Backspace in insert mode
