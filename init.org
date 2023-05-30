@@ -834,6 +834,26 @@ Works like a "workspace".
     :config
     (setq TeX-view-program-selection '((output-pdf "Okular"))))
 #+end_src
+** Org-Download
+#+begin_src emacs-lisp
+(use-package org-download
+  :after org
+  :custom
+  ;; Other options, mainly from https://github.com/abo-abo/org-download/issues/131
+  ;; (org-download-method 'directory)
+  ;; (org-download-image-dir "~/journal/_resources")
+  ;; (org-download-heading-lvl 0)
+  ;; (org-download-timestamp "org_%Y%m%d-%H%M%S_")
+  ;; (org-image-actual-width 900)
+  (org-download-screenshot-method "xclip -selection clipboard -t image/png -o > '%s'")
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)  ;; Drag-and-drop to `dired`
+  ;; :bind
+  ;; (:map org-mode-map
+  ;;       (("s-Y" . org-download-screenshot)
+  ;;        ("s-y" . org-download-yank)))
+)
+#+end_src
 * Visuals
 #+begin_src emacs-lisp
   ;; Font
