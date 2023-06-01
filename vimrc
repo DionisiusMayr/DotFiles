@@ -136,9 +136,9 @@ try
     " colorscheme seoul256
     " let g:seoul256_background=236
     " colorscheme embark
-    colorscheme gruvbox
+    " colorscheme gruvbox
     " set background=dark
-    " colorscheme jellybeans
+    colorscheme jellybeans
 catch
 endtry
 
