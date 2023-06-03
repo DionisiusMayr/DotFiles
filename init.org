@@ -760,15 +760,16 @@ Works like a "workspace".
   (setq org-src-preserve-indentation t)
 
   (dio/leader-keys
-    "o" '(:ignore t :which-key "Org")
-    "o a" '(org-agenda :which-key "Agenda")
-    "o d" '(:ignore t :which-key "Dates")
-    "o d d" '(org-deadline :which-key "Deadline")
-    "o d s" '(org-schedule :which-key "Schedule")
-    "o d t" '(org-time-stamp :which-key "Timestamp")
+    "o" '(:ignore t :which-key "org")
+    "o a" '(org-agenda :which-key "agenda")
+    "o d" '(:ignore t :which-key "dates")
+    "o d d" '(org-deadline :which-key "deadline")
+    "o d s" '(org-schedule :which-key "schedule")
+    "o d t" '(org-time-stamp :which-key "timestamp")
     ;; TODO Create the archive subtree
     )
 )
+
 
 (use-package evil-org
   :after (evil org)
