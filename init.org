@@ -768,6 +768,28 @@ Works like a "workspace".
     "o d t" '(org-time-stamp :which-key "timestamp")
     ;; TODO Create the archive subtree
     )
+
+  ;; Setting the global .bib file with all our citations
+  ;; This file can be populated automatically by Zotero
+  (setq org-cite-global-bibliography '("/home/dionisius/zotero_lib.bib"))
+
+  ;; Using Zotero to get the .csl styles
+  (setq org-cite-csl-styles-dir "~/Zotero/styles")
+
+  ;; Set different export processor for each file type
+  ;; From: https://kristofferbalintona.me/posts/202206141852/#which-processor-should-i-use
+  ;; TODO customize it properly
+  (setq org-cite-export-processors '(
+    (md . (csl "chicago-fullnote-bibliography.csl"))   ; Footnote reliant
+    (latex . biblatex)                                 ; For humanities
+    (odt . (csl "chicago-fullnote-bibliography.csl"))  ; Footnote reliant
+    (t . (csl "modern-language-association.csl"))      ; Fallback
+  ))
+
+  :custom-face
+  ;; Have citation link faces look closer to as they were for `org-ref'
+  (org-cite ((t (:foreground "DarkSeaGreen4"))))
+  (org-cite-key ((t (:foreground "forest green" :slant italic))))
 )
 
 
