@@ -888,7 +888,7 @@ Works like a "workspace".
 
   ;; Line numbers
   (global-display-line-numbers-mode t)         ;; Show line number
-  (setq display-line-numbers-type 'relative) ;; *Relative line number
+  ;; (setq display-line-numbers-type 'relative) ;; Relative line number
   (column-number-mode)                       ;; Show column mode in the mode line
 
   ;; Highligths
