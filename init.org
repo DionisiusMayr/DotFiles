@@ -882,6 +882,76 @@ Works like a "workspace".
 )
 #+end_src
 ** Org-roam
+*** Notes
+The =ROAM_EXCLUDE= property set to =t= can be used to exclude a headline from the Org-roam database.
+**** Navigating the Org-roam Buffer
+M-{N}: section show level
+n: section forward  ;; I am not sure about the difference between these two yet. It can be something related to nested fields.
+<TAB>: Toggle
+<RET>: Go to thing in this window
+C-u <RET>: Go to thing in other window ;; TODO: Doesn't work. Might be a problem with Evil-mode.
+**** Widget types (for the display buffer)
+- Backlinks: View (preview of) nodes that link to this node;
+- Reference Links: Nodes that reference this node (see Refs);
+- Unlinked references: View nodes that contain text that match the nodes title/alias but are not linked.
+**** Aliases
+There is a property =ROAM_ALIASES= that can be set with alternative Titles for the node, which can be used during search.
+There are also two useful commands:
+- org-roam-alias-add: add an alias of the node at point
+- org-roam-alias-remove: remove the alias of the node at point
+**** Tags
+***** TODO I've got no idea what tags are.
+**** Refs
+They help identifying nodes thorugh `reference backlinks`.
+I am still unsure about how they differ from Aliases, but they can be used to referenciate websites or *papers*.
+- org-roam-ref-add: add a ref to the node at point
+- org-roam-ref-remove: remove a ref from the node at point
+**** Citations
+Org-Roam uses the built-in citations from Org.
+***** ONGO Check Org citations and/or org-cite and/or org-ref citations.
+***** TODO Check org-roam-bibtex as well as org-ref and helm-bibtex
+**** Completion
+Just use =M-x completion-at-point= to trigger them.
+(Doesn't seem to work though)
+***** company integration
+Add =company-capf= to =company-backends=
+**** Template
+***** TODO Might be interesting to create a template for Anki integration.
+**** org-roam-protocol
+Used by external applications to communicate with org-roam.
+***** Instalation
+Create a desktop application.
+#+begin_src sh
+echo -e "[Desktop Entry]\nName=Org-Protocol\nExec=emacsclient %u\nIcon=emacs-icon\nType=Application\nTerminal=false\nMimeType=x-scheme-handler/org-protocol" > ~/.local/share/applications/org-protocal.desktop
+#+end_src
+
+Associate =org-protocal://= links with the desktop application
+#+begin_src sh
+xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol
+#+end_src
+***** How to interact with it
+You can use bookmarklets to do so through a browser, for instance.
+#+begin_src js
+javascript:location.href =
+    'org-protocol://roam-ref?template=r&ref='
+    + encodeURIComponent(location.href)
+    + '&title='
+    + encodeURIComponent(document.title)
+    + '&body='
+    + encodeURIComponent(window.getSelection())
+#+end_src
+**** org-roam-graph
+It is possible to customize the graph, check https://www.orgroam.com/manual.html#org_002droam_002dgraph.
+**** Journaling
+Also possible, but not to configure it first. Check https://www.orgroam.com/manual.html#org_002droam_002ddailies.
+**** Export
+Underneath it uses =org-export= but if you =(require 'org-roam-export)= it will override a bunch of configs to better support org-roam.
+***** TODO Check how to export it.
+***** Publishing
+https://www.orgroam.com/manual.html#How-do-I-publish-my-notes-with-an-Internet_002dfriendly-graph_003f
+**** Undo/Redo
+I think that it doesn't work really well, but apparently it can be fixed using =winner-mode=.
+Check https://www.orgroam.com/manual.html#Browsing-History-with-winner_002dmode.
 *** Config
 #+begin_src emacs-lisp
 (use-package org-roam
