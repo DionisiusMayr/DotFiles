@@ -881,6 +881,81 @@ Works like a "workspace".
   ;;        ("s-y" . org-download-yank)))
 )
 #+end_src
+** Org-roam
+*** Config
+#+begin_src emacs-lisp
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/Documents/org-roam")
+  (org-roam-completion-everywhere t)  ;; Enable to autocomplete node names using the `completion-at-point` command (C-M-i)
+
+  ;; Templates
+  (org-roam-capture-templates '(
+    ("d" "default" plain "%?"
+    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: ::\n#+source: \n")
+    :unnarrowed t)
+
+    ("j" "japanese" plain "%?"
+    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: :Japanese:\n#+source: [cite:@bannoGenkiIntegratedCourse2020]\n")
+    :unnarrowed t)
+
+    ("a" "algorithm" plain "%?"
+    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: :Algorithm:\n#+source: [cite:@cormenIntroductionAlgorithms2022]\n")
+    :unnarrowed t)
+
+    ("c" "causality" plain "%?"
+    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: :Causality:\n#+source: [cite:@petersElementsCausalInference2017]\n")
+    :unnarrowed t)
+    ))
+
+  :config
+  (org-roam-setup)
+  (org-roam-db-autosync-mode)  ;; Maintain cache consistency on file changes
+
+  ;; What is shown in the display buffer
+  (setq org-roam-mode-sections
+	(list #'org-roam-backlinks-section
+	      #'org-roam-reflinks-section
+	      ;; Computing unlinked references can be really slow.
+	      #'org-roam-unlinked-references-section
+	      ))
+
+  ;; Controlling how the display buffer is popped.
+  ;; This is the recommended configuration for a regular window (not a side window)
+  (add-to-list 'display-buffer-alist
+               '("\\*org-roam\\*"
+                 (display-buffer-in-direction)
+                 (direction . right)
+                 (window-width . 0.20)
+                 (window-height . fit-window-to-buffer)))
+
+  ;; Alternative, as a side-window:
+  ;; (add-to-list 'display-buffer-alist
+  ;;              '("\\*org-roam\\*"
+  ;;                (display-buffer-in-side-window)
+  ;;                (side . right)
+  ;;                (slot . 0)
+  ;;                (window-width . 0.33)
+  ;;                (window-parameters . ((no-other-window . t)
+  ;;                                      (no-delete-other-windows . t)))))
+
+  (dio/leader-keys
+    "r" '(:ignore t :which-key "roam")
+    "r b" '(org-roam-buffer-toggle :which-key "toggle buffer")
+    "r d" '(org-roam-buffer-display-dedicated :which-key "dedicated buffer")  ;; Unlike org-roam-buffer-toggle, you can have multiple buffers
+    ;; and their content won't be automatically replaced with a new node at point.
+    "r f" '(org-roam-node-find :which-key "find node")
+    "r i" '(org-roam-node-insert :which-key "insert node")
+    "r c" '(org-roam-capture :which-key "capture node")  ;; Creates a node and restores the current window configuration upon completion.
+    "r g" '(org-id-get-create :which-key "create id")
+    "r a" '(org-roam-alias-add :which-key "add alias")
+    "r t" '(org-roam-tag-add :which-key "add tag")
+    )
+  )
+#+end_src
 * Visuals
 #+begin_src emacs-lisp
   ;; Font
