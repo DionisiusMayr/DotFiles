@@ -1026,6 +1026,27 @@ Check https://www.orgroam.com/manual.html#Browsing-History-with-winner_002dmode.
     )
   )
 #+end_src
+*** Org-Roam-UI
+#+begin_src emacs-lisp
+(use-package org-roam-ui
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t)
+  (dio/leader-keys
+    "r u" '(:ignore t :which-key "UI")
+    "r u u" '(org-roam-ui-open :which-key "open UI")
+    "r u l" '(org-roam-ui-node-local :which-key "local node")
+    "r u z" '(org-roam-ui-node-zoom :which-key "zoom current node"))
+  )
+#+end_src
+
 * Visuals
 #+begin_src emacs-lisp
   ;; Font
