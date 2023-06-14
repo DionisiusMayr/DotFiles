@@ -567,6 +567,27 @@ Works like a "workspace".
     )
 #+end_src
 ** Languages
+*** Japanese
+Experimental.
+#+begin_src emacs-lisp
+(defvar my/font "DejaVu Sans Mono" "Main font")
+
+;; apti fonts-ipafont-mincho
+(defvar my/font-ja "IPAPMincho" "Japanese font")
+;; (defvar my/font-ja "Noto Mono" "Japanese font")
+
+(defun my/use-font (&optional frame)
+  (when frame
+    (select-frame frame))
+
+  (set-face-attribute 'default nil :font my/font)
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font) charset
+                        (font-spec :family my/font-ja))))
+
+(my/use-font)
+#+end_src
+
 *** Python
 **** Setup
 #+begin_src shell
