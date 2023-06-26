@@ -631,9 +631,14 @@ Experimental.
     :config
     (pyvenv-mode 1))
 #+end_src
+*** Rust
+#+begin_src emacs-lisp
+(use-package rust-mode
+  :hook (rust-mode . lsp)
+)
+#+end_src
 *** Markdown
 #+begin_src emacs-lisp
-
    ;; Markdown-mode
    (use-package markdown-mode
      :commands (markdown-mode gfm-mode)
