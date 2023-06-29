@@ -4,6 +4,8 @@
  #+STARTUP: showeverything
 * Notes
   :diminish ;; Don't show in the mode line
+* TODOs
+** TODO Check https://github.com/emacs-citar/citar-org-roam
 * Header
 #+begin_src emacs-lisp
   (setq user-emacs-directory "/home/dionisius/.emacs.d")
@@ -587,7 +589,6 @@ Experimental.
 
 (my/use-font)
 #+end_src
-
 *** Python
 **** Setup
 #+begin_src shell
