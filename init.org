@@ -554,19 +554,20 @@ Works like a "workspace".
 #+end_src
 * Programming
 ** Projectile
+I'm yet to understand how to use projectile.
 #+begin_src emacs-lisp
   ;; Projectile
-  (use-package projectile
+  ;; (use-package projectile
     ;; :diminish projectile-mode
-    :config
-    (projectile-mode)
-    (dio/leader-keys
-      "p" '(projectile-command-map :which-key "Projectile"))
-    :init
-    (when (file-directory-p "~/pier/repos")
-      (setq projectile-project-search-path '("~/pier/repos")))
+    ;; :config
+    ;; (projectile-mode)
+    ;; (dio/leader-keys
+      ;; "p" '(projectile-command-map :which-key "Projectile"))
+    ;; :init
+    ;; (when (file-directory-p "~/repos")
+      ;; (setq projectile-project-search-path '("~/repos")))
     ;; (setq projectile-switch-project-action #'projectile-dired)
-    )
+    ;; )
 #+end_src
 ** Languages
 *** Japanese
