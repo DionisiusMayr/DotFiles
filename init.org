@@ -220,6 +220,10 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
   :ensure t
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+
+  ;; TODO I am not sure what this marginalia-cycle does yet.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 #+end_src
