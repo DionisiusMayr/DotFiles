@@ -756,6 +756,9 @@ Experimental.
     "s" '(:ignore t :which-key "spelling")
     "s s" '(flyspell-mode :which-key "flyspell-mode")
     "s c" '(ispell-word :which-key "check cursor"))
+
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
 * Terminal
 ** vterm
