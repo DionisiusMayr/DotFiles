@@ -746,16 +746,16 @@ Experimental.
 * Spell Checking
 - M-$ allows you to check the possible candidates for the word under the cursor;
 #+begin_src emacs-lisp
-  (with-eval-after-load "ispell"
-    (setq ispell-program-name "/usr/bin/hunspell")
-    (setq ispell-dictionary "en_CA,pt_BR")
-    (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "en_CA,pt_BR"))
+(with-eval-after-load "ispell"
+  (setq ispell-program-name "/usr/bin/hunspell")
+  (setq ispell-dictionary "en_CA,pt_BR")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_CA,pt_BR"))
 
-  (dio/leader-keys
-    "s" '(:ignore t :which-key "spelling")
-    "s s" '(flyspell-mode :which-key "flyspell-mode")
-    "s c" '(ispell-word :which-key "check cursor"))
+(dio/leader-keys
+  "s" '(:ignore t :which-key "spelling")
+  "s s" '(flyspell-mode :which-key "flyspell-mode")
+  "s c" '(ispell-word :which-key "check cursor"))
 
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
