@@ -52,6 +52,20 @@
   (setq calendar-date-style "iso")
 #+end_src
 * Packages
+** use-package
++ =:init= is used to execute code before the package is loaded;
++ =:config= executes the code after a package is loaded (if it is loaded lazily, the code is deferred until the lazy load occurs);
++ =:commands= it creates autoloads for the commands specified and defers the module loading until they are used. It accepts a symbol or a list of symbols;
+  - Example:
+    :commands ace-jump-mode
++ =:map=
++ =:bind= binds commands when loading a module. It creates an autoload for the command and defers the loading of the package until you actually use it.
+  - Example:
+    :bind (
+        ("M-s O" . moccur)
+        "M-g f" ("Jump to line" . avy-goto-line)  ; Optionally you can also put a description of the command (for example, for the `which-key` package).
+    )
++ =:autoload=
 ** Straight
 Visualize load time statistics with =use-package-report=.
 #+begin_src emacs-lisp
