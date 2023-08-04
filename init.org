@@ -113,6 +113,7 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
     "f r" '(find-file :which-key "Recent File")
     "f f" '(find-file :which-key "Find File")
     ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
+    "f d" '((lambda() (interactive)(find-file "~/Documents/dio.org")) :which-key "dio.org")
     "f p" '((lambda() (interactive)(find-file "~/repos/DotFiles/init.org")) :which-key "init.org")
     "f s" '(save-buffer :which-key "Save Buffer")
     "g" '(:ignore t :which-key "Git")
