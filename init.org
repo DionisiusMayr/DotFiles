@@ -793,8 +793,14 @@ Experimental.
     (lambda() (setq show-trailing-whitespace nil)))
 #+end_src
 * ORG
-** General config
+** General configuration
 #+begin_src emacs-lisp
+;; Setting the global .bib file with all our citations on Zotero and a personal one as well.
+;; The `zotero_lib.bib` file is populated automatically by Zotero.
+;; (setq org-cite-global-bibliography bibtex-files)  ; This isn't necessary anymore, since we are using Citar.
+(defvar bibtex-files '("/home/dionisius/zotero_lib.bib" "/home/dionisius/dio_lib.bib") "BibTeX files.")
+
+
 (use-package org
   :config
   (setq org-startup-folded t)
@@ -819,10 +825,6 @@ Experimental.
     "o d t" '(org-time-stamp :which-key "timestamp")
     ;; TODO Create the archive subtree
     )
-
-  ;; Setting the global .bib file with all our citations
-  ;; This file can be populated automatically by Zotero
-  (setq org-cite-global-bibliography '("/home/dionisius/zotero_lib.bib"))
 
   ;; Using Zotero to get the .csl styles
   (setq org-cite-csl-styles-dir "~/Zotero/styles")
@@ -1103,7 +1105,7 @@ Check https://www.orgroam.com/manual.html#Browsing-History-with-winner_002dmode.
 (use-package citar
   :straight (citar :type git :host github :repo "emacs-citar/citar" :includes (citar-org))
   :config
-  (setq citar-bibliography '("/home/dionisius/zotero_lib.bib"))
+  (setq citar-bibliography bibtex-files)
 
   (dio/leader-keys
     "o c" '(:ignore t :which-key "citar")
