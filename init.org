@@ -508,6 +508,14 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
 #+end_src
 ** Snippets
 *** Yasnippets
+**** Commands
+=yas-new-snippet= creates a new snippet. Put it on the folder with the name of the mode you want that snippet to be active/enabled.
+**** Snippet notation
+The snippet files have a =key= property.
+This property indicates the key sequence that, if followed by a <TAB>, will replace that sequence with the snippet itself.
+
+=$0= indicates the position the cursor will end at after the snippet has been inserted.
+=${#:label}= where # replaced by any number. Creates a field (with =label= as a name) that need to be filled when inserting the snippet. (Press <TAB> after filling it.)
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
