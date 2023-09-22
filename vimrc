@@ -75,7 +75,7 @@ Plugin 'vim-syntastic/syntastic'
 
 " Single download only
 " --------------------
-" Plugin 'powerline/fonts'
+Plugin 'powerline/fonts'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -136,9 +136,9 @@ try
     " colorscheme seoul256
     " let g:seoul256_background=236
     " colorscheme embark
-    " colorscheme gruvbox
-    " set background=dark
-    colorscheme jellybeans
+    colorscheme gruvbox
+    set background=dark
+    " colorscheme jellybeans
 catch
 endtry
 
@@ -324,7 +324,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline_theme = 'base16_ashes'
 " let g:airline_theme = 'jellybeans'
-let g:airline_theme = 'embark'
+" let g:airline_theme = 'embark'
+let g:airline_theme = 'gruvbox'
 
 " Vim-Mundo
 " ---------
