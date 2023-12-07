@@ -1,4 +1,4 @@
-#+TITLE Emacs configuration
+#/home/dionisius/repos/DotFiles+TITLE Emacs configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 
  #+STARTUP: showeverything
@@ -50,6 +50,11 @@
 
   ;; Date Format
   (setq calendar-date-style "iso")
+
+  ;; Use tab width of 4 instead of 8
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq indent-line-function 'insert-tab)
 #+end_src
 * Packages
 ** use-package
@@ -94,7 +99,7 @@ Visualize load time statistics with =use-package-report=.
 ** All the icons
 *** Installation
 Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
-*** Config
+*** Configuration
 #+begin_src emacs-lisp
     (use-package all-the-icons)
         ;; :if (display-graphic-p))
@@ -516,15 +521,17 @@ This property indicates the key sequence that, if followed by a <TAB>, will repl
 
 =$0= indicates the position the cursor will end at after the snippet has been inserted.
 =${#:label}= where # replaced by any number. Creates a field (with =label= as a name) that need to be filled when inserting the snippet. (Press <TAB> after filling it.)
+**** Configuration
 #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
   :config
+    ; (setq yas-snippet-dirs '(/home/dionisius/repos/DotFiles/snippets/))
     (yas-global-mode 1)
     (dio/leader-keys
       "i"   '(:ignore t :which-key "Insert")
       "i c" '(yas-new-snippet :which-key "Create Snippet")
-      "i e" '(yas-view-snippet-file :which-key "Edit snippet file")
+      "i e" '(yas-visit-snippet-file :which-key "Edit snippet file")
       "i s" '(yas-insert-snippet :which-key "Insert Snippet")))
 
 (use-package yasnippet-snippets
@@ -597,6 +604,12 @@ I'm yet to understand how to use projectile.
     ;; )
 #+end_src
 ** Languages
+*** C
+#+begin_src emacs-lisp
+  (setq c-default-style "k&r"
+        c-basic-offset 4)
+#+end_src
+
 *** Japanese
 Experimental.
 #+begin_src emacs-lisp
@@ -805,6 +818,9 @@ Experimental.
 #+begin_src emacs-lisp
 ;; Setting the global .bib file with all our citations on Zotero and a personal one as well.
 ;; The `zotero_lib.bib` file is populated automatically by Zotero.
+;; To set it up, you need to install the Better BibTeX add-on from https://github.com/retorquere/zotero-better-bibtex
+;; Then right click on your library, export library, Better BibLaTeX and check the Keep updated checkbox.
+
 ;; (setq org-cite-global-bibliography bibtex-files)  ; This isn't necessary anymore, since we are using Citar.
 (defvar bibtex-files '("/home/dionisius/zotero_lib.bib" "/home/dionisius/dio_lib.bib") "BibTeX files.")
 
