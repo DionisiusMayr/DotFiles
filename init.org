@@ -55,6 +55,9 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
   (setq indent-line-function 'insert-tab)
+
+  ;; Change the Garbage Collector threshold (in bytes)
+  (setq gc-cons-threshold (* 400 1024 1024))
 #+end_src
 * Packages
 ** use-package
