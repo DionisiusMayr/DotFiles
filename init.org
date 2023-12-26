@@ -121,7 +121,7 @@ Run =M-x all-the-icons-install-fonts= after installing it to get the fonts.
     "f r" '(find-file :which-key "Recent File")
     "f f" '(find-file :which-key "Find File")
     ;; "f p" '((lambda() (interactive)(find-file user-init-file)) :which-key "init.el")
-    "f d" '((lambda() (interactive)(find-file "~/Documents/dio.org")) :which-key "dio.org")
+    "f d" '((lambda() (interactive)(find-file "~/Documents/org/dio.org")) :which-key "dio.org")
     "f p" '((lambda() (interactive)(find-file "~/repos/DotFiles/init.org")) :which-key "init.org")
     "f s" '(save-buffer :which-key "Save Buffer")
     "g" '(:ignore t :which-key "Git")
@@ -832,7 +832,7 @@ Experimental.
   :config
   (setq org-startup-folded t)
   (setq org-startup-indented t)
-  (setq org-agenda-files (list "~/Documents/dio.org"))
+  (setq org-agenda-files (list "~/Documents/org/dio.org"))
   (setq org-hierarchical-todo-statistics nil) ;; TODO: Check this
 
   ;; You can add special markers after each keyword (d!) or (d@) to record the timestamp
@@ -1039,7 +1039,7 @@ Check https://www.orgroam.com/manual.html#Browsing-History-with-winner_002dmode.
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/Documents/org-roam")
+  (org-roam-directory "~/Documents/org/org-roam")
   (org-roam-completion-everywhere t)  ;; Enable to autocomplete node names using the `completion-at-point` command (C-M-i)
 
   ;; Templates
@@ -1233,6 +1233,7 @@ Check https://www.orgroam.com/manual.html#Browsing-History-with-winner_002dmode.
     ;; :config (load-theme 'doom-flatwhite t))
 
   ;; Doom-modeline
+  ;; Run nerd-icons-install-fonts for the bottom icons
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :custom (doom-modeline-height 35))
