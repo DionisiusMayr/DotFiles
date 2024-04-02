@@ -153,8 +153,8 @@ fi
 # tmux support
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
-# TODO: fix this: bat as man
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# bat as man
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
 
 # Haskell configs
