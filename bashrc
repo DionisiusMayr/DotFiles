@@ -174,7 +174,7 @@ export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 alias python=python3
 
 # Autojump
-[ -f /usr/share/autojump/autojump.sh ] && source /user/share/autojump/autojump.sh
+[ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh
 
 # Fzf
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
