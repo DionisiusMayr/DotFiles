@@ -38,7 +38,7 @@ alias aptu='sudo apt update && sudo apt upgrade'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Useful tools
-alias bat='bat --style=plain'
+alias bat='batcat --style=plain'
 
 # Python
 alias py='python3'
