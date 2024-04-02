@@ -159,7 +159,6 @@ export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -s "${HOME}/.autojump/etc/profile.d/autojump.sh" ]] && source "${HOME}/.autojump/etc/profile.d/autojump.sh"
 
 # Haskell configs
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
@@ -179,3 +178,6 @@ export PATH=${PATH}:~/installed_software/diff-so-fancy
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 
 alias python=python3
+
+# For Autojump
+[ -f /usr/share/autojump/autojump.sh ] && source /user/share/autojump/autojump.sh
