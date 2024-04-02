@@ -158,7 +158,6 @@ export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
 # TODO: fix this: bat as man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Haskell configs
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
@@ -179,5 +178,8 @@ export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 
 alias python=python3
 
-# For Autojump
+# Autojump
 [ -f /usr/share/autojump/autojump.sh ] && source /user/share/autojump/autojump.sh
+
+# Fzf
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
