@@ -169,9 +169,6 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # Otherwise start tmux
 [[ -z "${TMUX}" ]] && exec tmux
 
-# diff-so-fancy in ${PATH}
-export PATH=${PATH}:~/installed_software/diff-so-fancy
-
 # For the Cuda libraries
 # TODO: Check if LD_LIBRARY_PATH is indeed empty
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
