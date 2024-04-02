@@ -142,15 +142,13 @@ export EDITOR='vim'
 export LC_CTYPE=en_CA.UTF-8
 
 # Git completion
-source "${HOME}/repos/DotFiles/git-completion.bash"
-source "${HOME}/repos/DotFiles/git-prompt.sh"
+[ -f "${HOME}/repos/DotFiles/git-completion.bash" ] && source "${HOME}/repos/DotFiles/git-completion.bash"
 
 if [ -f "${HOME}/repos/bash-git-prompt/gitprompt.sh" ]; then
     GIT_PROMPT_ONLY_IN_REPO=1
     source "${HOME}/repos/bash-git-prompt/gitprompt.sh"
+    export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
 fi
-
-export GIT_PROMPT_THEME="Single_line_Solarized_Lamda"
 
 # tmux support
 [ -z "$TMUX" ] && export TERM=xterm-256color
